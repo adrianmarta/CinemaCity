@@ -35,4 +35,6 @@ Pagina create party
     #se completeaza descrierea si locatia
     #buton de adaugat goodies
     #selectarea numarului maxim de participanti
+
+pagina Figma:https://www.figma.com/file/mECjAWp791KXZkUoS2ClIs/Untitled?type=design&node-id=0%3A1&mode=design&t=l9oP3D5jeaT7sNi2-1
     
