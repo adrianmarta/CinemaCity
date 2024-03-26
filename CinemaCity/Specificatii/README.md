@@ -41,4 +41,4 @@ Pagina create party
     #selectarea numarului maxim de participanti
 
 pagina Figma:https://www.figma.com/file/mECjAWp791KXZkUoS2ClIs/Untitled?type=design&node-id=0%3A1&mode=design&t=l9oP3D5jeaT7sNi2-1
-    
+Vom folosii REACT pt frontend, si Java Spring Boot pt backend 
