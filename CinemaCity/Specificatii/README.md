@@ -1,3 +1,7 @@
+Membrii echipa:Marta Ioan-Adrian, Cristian Alexandru-Dragoi
+Nume Echipa::THE BITLES
+Aplicatie Web pentru party-uri de vazut filme impreuna, cu oameni necunoscuti 
+
 ###SPECIFICATII###
 
 Pagina Initiala
