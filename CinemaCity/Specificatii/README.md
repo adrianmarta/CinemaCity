@@ -40,5 +40,5 @@ Pagina create party
     #buton de adaugat goodies
     #selectarea numarului maxim de participanti
 
-pagina Figma:https://www.figma.com/file/mECjAWp791KXZkUoS2ClIs/Untitled?type=design&node-id=0%3A1&mode=design&t=l9oP3D5jeaT7sNi2-1
+pagina Figma:https://www.figma.com/file/mECjAWp791KXZkUoS2ClIs/Untitled?type=design&node-id=0-1&mode=design&t=JXwMiwQ9jRVlZljt-0
 Vom folosii REACT pt frontend, si Java Spring Boot pt backend 
