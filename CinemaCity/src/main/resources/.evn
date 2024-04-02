@@ -1,0 +1,4 @@
+MONGO_DATABASE="cinemahome"
+MONGO_USER="adiandcristi"
+MONGO_PASSWORD="T4x5365I7wJpUych"
+MONGO_CLUSTER="cluster0.qfv9b4n.mongodb.net/?"
