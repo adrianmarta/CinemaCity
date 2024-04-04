@@ -11,7 +11,7 @@ import java.util.List;
 
 @Document(collection = "users")
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class User {
     private String Name;
@@ -22,4 +22,13 @@ public class User {
     private String password;
     @DocumentReference
     private List<Reviews> reviews;
+    public User(String name, int age, char gender, String email, String password)
+    {
+        this.Name=name;
+        this.age=age;
+        this.email=email;
+        this.gender=gender;
+        this.password=password;
+
+    }
 }

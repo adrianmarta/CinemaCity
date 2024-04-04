@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
@@ -14,10 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 public class Party {
     @Id
-    private String party_planer_name, film_name, description, location, restrictions;
+    private String party_planer_name;
+    private String film_name, description, location, restrictions;
     private List<String> goodies;
     private int max_participants;
     private User hostUser;
+    @DocumentReference
     private List<User> joined_participants;
 
     //private location?
