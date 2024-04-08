@@ -19,6 +19,7 @@ public class Party {
     private String film_name, description, location, restrictions;
     private List<String> goodies;
     private int max_participants;
+    @DocumentReference
     private User hostUser;
     @DocumentReference
     private List<User> joined_participants;
