@@ -21,7 +21,7 @@ public class User {
     private String email;
     private String password;
     @DocumentReference
-    private List<Reviews> reviews;
+    private List<Review> reviews;
     public User(String name, int age, char gender, String email, String password)
     {
         this.Name=name;
