@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 function SignUp() {
-    const [username, setUsername] = useState('');
+    const [Name, setUsername] = useState('');
     const [age, setAge] = useState('');
     const [gender, setGender] = useState('');
     const [email, setEmail] = useState('');
@@ -13,13 +13,13 @@ function SignUp() {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8080/users', {
-                username,
+                Name,
                 age,
                 gender,
                 email,
                 password,
             });
-            console.log('User created', response.data);
+            console.log('User created', JSON.stringify(response.data));
             // Redirect or perform actions after successful sign up
         } catch (error) {
             console.error('User creation failed', error);
@@ -28,12 +28,13 @@ function SignUp() {
 
     return (
         <div>
+
             <h2>Sign Up</h2>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="Username"
-                    value={username}
+                    value={Name}
                     onChange={(e) => setUsername(e.target.value)}
                 />
                 <input
