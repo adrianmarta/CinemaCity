@@ -17,5 +17,6 @@ public class PartyController {
         return new ResponseEntity<>(partyService.AllParties(), HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<Party> createParty(@RequestBody Party party){ return new ResponseEntity<>(partyService.createParty(party), HttpStatus.CREATED);}
+    public ResponseEntity<Party> createParty(@RequestBody Party party){
+        return new ResponseEntity<>(partyService.createParty(party), HttpStatus.CREATED);}
 }

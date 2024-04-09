@@ -20,7 +20,7 @@ public class UserController {
     {
         return new ResponseEntity<List<User>>(userService.AllUsers(), HttpStatus.OK);
     }
-    @PostMapping("/{SignIn}")
+    @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody User user) {
         Optional<User> existingUser = userService.singleUserByEmail(user.getEmail());
         if(existingUser.isPresent()){
@@ -30,7 +30,7 @@ public class UserController {
             User newUser = userService.createUser(user);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);}
     }
-    @GetMapping("/{email}")
+    @GetMapping("/{SignIn}")
     public ResponseEntity<Optional<User>> findUserByEmail(@PathVariable String email){
         return new ResponseEntity<Optional<User>>(userService.singleUserByEmail(email),HttpStatus.OK);
     }

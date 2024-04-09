@@ -3,6 +3,7 @@ package com.CinemaCity.CinemaCity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Party {
     @Id
+    private ObjectId objectId;
     private String party_planer_name;
     private String film_name, description, location, restrictions;
     private List<String> goodies;
