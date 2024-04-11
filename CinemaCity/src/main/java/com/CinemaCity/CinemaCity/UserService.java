@@ -10,13 +10,19 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    public List<User> AllUsers(){
+
+    public List<User> AllUsers() {
         return userRepository.findAll();
 
     }
+
     public User createUser(User user) {
         return userRepository.save(user);
     }
 
-    public Optional<User> singleUserByEmail(String email){return userRepository.findUserByEmail(email);}
+    public Optional<User> singleUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+
 }

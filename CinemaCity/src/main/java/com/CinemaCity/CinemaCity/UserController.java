@@ -31,7 +31,25 @@ public class UserController {
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);}
     }
     @GetMapping("/{SignIn}")
-    public ResponseEntity<Optional<User>> findUserByEmail(@PathVariable String email){
-        return new ResponseEntity<Optional<User>>(userService.singleUserByEmail(email),HttpStatus.OK);
+    public ResponseEntity<Optional<User>> findUserByEmail(@PathVariable String SignIn){
+        return new ResponseEntity<Optional<User>>(userService.singleUserByEmail(SignIn),HttpStatus.OK);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+        Optional<User> existingUser = userService.singleUserByEmail(loginRequest.getEmail());
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            if (user.getPassword().equals(loginRequest.getPassword())) {
+                // Passwords match, login successful
+                return ResponseEntity.ok("Login successful");
+            } else {
+                // Passwords don't match, login failed
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect password");
+            }
+        } else {
+            // User with provided email not found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
     }
 }
+
