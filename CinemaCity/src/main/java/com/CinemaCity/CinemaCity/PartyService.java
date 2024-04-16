@@ -32,6 +32,6 @@ public class PartyService {
         }
     }
     public void validateParty(Party party){
-        if(party.getMax_participants()==0)throw new RuntimeException("Maximum participants must be greater than 0!");
+        if(party.getMax_participants()<=0)throw new RuntimeException("Maximum participants must be greater than 0!");
     }
 }
