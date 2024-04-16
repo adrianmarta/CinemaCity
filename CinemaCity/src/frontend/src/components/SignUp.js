@@ -1,10 +1,8 @@
-// src/components/SignUp.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import {FaEnvelope, FaLock, FaUser} from "react-icons/fa";
-import {Link, useNavigate} from "react-router-dom";
+import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import './style.css';
-
 
 function SignUp() {
     const [name, setUsername] = useState('');
@@ -16,11 +14,10 @@ function SignUp() {
     const navigate = useNavigate();
     const [successMessage, setSuccessMessage] = useState('');
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { response}  = await axios.post('http://localhost:8080/users', {
+            const response = await axios.post('http://localhost:8080/users', {
                 name,
                 age,
                 gender,
@@ -30,14 +27,13 @@ function SignUp() {
             setSuccessMessage('User created successfully!');
             setError('');
             console.log('User created', JSON.stringify(response.data));
-            navigate('/main-page');
+            navigate('/main-page'); // Navigate after successful form submission
         } catch (error) {
-
             if (error && error.response && error.response.data) {
                 setError(error.response.data);
             } else {
-                console.error('User creation failed', error);            }
-
+                console.error('User creation failed', error);
+            }
         }
     };
 
