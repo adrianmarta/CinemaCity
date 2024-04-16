@@ -26,8 +26,9 @@ public class User {
     {
         this.Name=name;
         this.age=age;
-        this.email=email;
+
         this.gender=gender;
+        this.email=email;
         this.password=password;
 
     }
