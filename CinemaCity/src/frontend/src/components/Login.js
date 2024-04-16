@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import './style.css';
 import { FaUser, FaLock } from "react-icons/fa";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import {Link, useNavigate} from "react-router-dom"; // Import useNavigate for navigation
 
 const Login = () => {
     const [_id, setEmail] = useState('');
@@ -18,7 +18,6 @@ const Login = () => {
                 password,
             });
             console.log('Login successful', response.data);
-            // Navigate to main page on successful login
             navigate('/main-page');
         } catch (error) {
             console.error('Login failed', error.response.data);
@@ -59,9 +58,12 @@ const Login = () => {
                                 </label>
                                 <a href="#">Forgot Password</a>
                             </div>
-                            <button type="submit">Login</button>
+                            <Link to="/main-page">
+                                <button type="submit">Login</button>
+                            </Link>
+
                             <div className="register-link">
-                                <p>Don't have an account? <a href="#">Sign Up</a></p>
+                                <p>Don't have an account? <a href="/signup">Sign Up</a></p>
                             </div>
                         </form>
                     </div>
