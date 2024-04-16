@@ -1,3 +1,4 @@
+
 package com.CinemaCity.CinemaCity;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
