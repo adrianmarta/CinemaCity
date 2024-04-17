@@ -51,5 +51,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
+    @PostMapping()
+    public ResponseEntity<?> joinParty(@RequestBody LoginRequest loginRequest, @RequestBody Party party){
+        Optional<User> existingUser=userService.singleUserByEmail(loginRequest.getEmail());
+        if(existingUser.isPresent()){
+            userService.joinParty(party, existingUser.get());
+            return ResponseEntity.ok("User found and joined the party");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    }
 }
 

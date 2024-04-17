@@ -31,7 +31,7 @@ public class PartyService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
-    public void validateParty(Party party){
+    private void validateParty(Party party){
         if(party.getMax_participants()<=0)throw new RuntimeException("Maximum participants must be greater than 0!");
     }
 }
