@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalLong;
-@CrossOrigin("http://localhost:3000/signin")
+//@CrossOrigin("http://localhost:3000/signin")
 @RestController
 @RequestMapping("/users")
 public class UserController {

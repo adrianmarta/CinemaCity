@@ -16,13 +16,13 @@ import java.util.List;
 public class User {
     private String Name;
     private int age;
-    private char gender;
+    private String gender;
     @Id
     private String email;
     private String password;
     @DocumentReference
     private List<Review> reviews;
-    public User(String name, int age, char gender, String email, String password)
+    public User(String name, int age, String gender, String email, String password)
     {
         this.Name=name;
         this.age=age;

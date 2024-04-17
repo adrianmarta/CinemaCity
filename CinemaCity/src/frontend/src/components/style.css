@@ -18,6 +18,23 @@
     color: #fff;
     padding: 40px;
 }
+.input-box {
+    display: flex; /* Display input boxes in a flex container */
+    margin-bottom: 30px;
+}
+
+.input-box:first-child {
+    margin-right: 20px; /* Add margin to the right of the first input box in each row */
+}
+
+.input-box input,
+.input-box select {
+    flex: 1; /* Allow input boxes to grow and fill available space */
+}
+
+.input-box + .input-box {
+    margin-left: 20px; /* Add margin to the left of each input box except the first one */
+}
 
 form h2 {
     font-size: 36px;
@@ -43,13 +60,33 @@ form h2 {
     color: #ffffff;
     padding: 0 20px;
 }
+.input-box select {
+    -webkit-appearance: none; /* Remove default arrow */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff" width="24" height="24"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 20px center;
 
+}
 .input-box .icon {
     position: absolute;
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
     font-size: 16px;
+}
+.input-box input,
+.input-box select {
+    width: calc(100% - 40px);
+    height: 50px;
+    background: transparent;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .1);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 0 20px;
 }
 
 .form-box .remember-forgot {

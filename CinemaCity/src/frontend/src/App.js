@@ -4,6 +4,8 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import {BrowserRouter as Router, Route, Link, Routes} from 'react-router-dom';
 import MainPage from "./components/MainPage";
+import createParty from "./components/createParty";
+import CreateParty from "./components/createParty";
 
 function App() {
     return (
@@ -13,6 +15,7 @@ function App() {
                 <Route path="/signin" element={<SignUp/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/main-page" element={<MainPage/>}/>
+                <Route path="/parties" element={<CreateParty/>}/>
             </Routes>
         </Router>
     );
