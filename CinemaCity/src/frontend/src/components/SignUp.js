@@ -89,9 +89,9 @@ function SignUp() {
                                 />
                                 <FaLock className='icon'/>
                             </div>
-                            <Link to="/main-page">
-                                <button type="submit">Sign Up</button>
-                            </Link>
+
+                            <button type="submit">Sign Up</button>
+
 
                             <div className="register-link">
                                 <p>Already have an account? <a href="/login">Log in</a></p>

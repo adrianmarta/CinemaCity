@@ -5,7 +5,7 @@ import axios from "axios";
 import {Link, useNavigate} from "react-router-dom"; // Import useNavigate for navigation
 
 const Login = () => {
-    const [_id, setEmail] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate(); // Initialize useNavigate
@@ -14,7 +14,7 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8080/users/login', {
-                _id,
+                email,
                 password,
             });
             console.log('Login successful', response.data);
@@ -39,7 +39,7 @@ const Login = () => {
                             <div className="input-box">
                                 <input type="text"
                                        placeholder='email' required
-                                       value={_id}
+                                       value={email}
                                        onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <FaUser className='icon'/>
@@ -58,9 +58,9 @@ const Login = () => {
                                 </label>
                                 <a href="#">Forgot Password</a>
                             </div>
-                            <Link to="/main-page">
-                                <button type="submit">Login</button>
-                            </Link>
+
+                            <button type="submit">Login</button>
+
 
                             <div className="register-link">
                                 <p>Don't have an account? <a href="/signin">Sign Up</a></p>
