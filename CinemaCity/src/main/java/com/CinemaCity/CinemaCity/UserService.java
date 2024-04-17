@@ -13,7 +13,6 @@ public class UserService {
 
     public List<User> AllUsers() {
         return userRepository.findAll();
-
     }
 
     public User createUser(User user) {
@@ -23,6 +22,7 @@ public class UserService {
     public Optional<User> singleUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
-
-
+    public void joinParty(Party party,User user){
+    party.getJoined_participants().add(user);
+    }
 }

@@ -17,7 +17,5 @@ public class Review {
     private int rating;
     @DocumentReference
     private User reviewer;
-    @DocumentReference
-    private User reviewed;
 
 }
