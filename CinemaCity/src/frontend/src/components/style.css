@@ -18,6 +18,15 @@
     color: #fff;
     padding: 40px;
 }
+.wrapper-listing {
+    position: relative;
+    width: 420px;
+    background: #283548;
+    border-radius: 10px;
+    color: #fff;
+    padding: 40px;
+    opacity: 0.9;
+}
 .input-box {
     display: flex; /* Display input boxes in a flex container */
     margin-bottom: 30px;

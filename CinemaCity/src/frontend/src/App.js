@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Link, Routes} from 'react-router-dom';
 import MainPage from "./components/MainPage";
 import createParty from "./components/createParty";
 import CreateParty from "./components/createParty";
+import PartyDetails from "./components/PartyDetails";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/main-page" element={<MainPage/>}/>
                 <Route path="/parties" element={<CreateParty/>}/>
+                <Route path="/party-details" element={<PartyDetails/>}/>
             </Routes>
         </Router>
     );
