@@ -47,7 +47,7 @@ function SignUp() {
                     <div className="form-box register">
                         <form onSubmit={handleSubmit}>
                             <h2>Sign Up</h2>
-                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                            {error && <p style={{ color: 'red' }}>{error.message}</p>}
                             {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
                             <div className="input-box">
                                 <input type="text"

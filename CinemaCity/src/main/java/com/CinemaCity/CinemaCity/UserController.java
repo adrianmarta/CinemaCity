@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalLong;
-//@CrossOrigin("http://localhost:3000/signin")
+@CrossOrigin("http://localhost:3000/signin")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -51,7 +51,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
-    @PostMapping()
+   /* @PostMapping()
     public ResponseEntity<?> joinParty(@RequestBody LoginRequest loginRequest, @RequestBody Party party){
         Optional<User> existingUser=userService.singleUserByEmail(loginRequest.getEmail());
         if(existingUser.isPresent()){
@@ -59,6 +59,6 @@ public class UserController {
             return ResponseEntity.ok("User found and joined the party");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-    }
+    }*/
 }
 

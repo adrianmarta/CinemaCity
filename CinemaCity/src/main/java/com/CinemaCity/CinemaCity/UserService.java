@@ -9,7 +9,7 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    private static UserRepository userRepository;
+    private UserRepository userRepository;
 
     public List<User> AllUsers() {
         return userRepository.findAll();
