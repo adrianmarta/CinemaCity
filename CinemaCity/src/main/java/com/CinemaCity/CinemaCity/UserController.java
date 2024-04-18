@@ -51,14 +51,21 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
-   /* @PostMapping()
-    public ResponseEntity<?> joinParty(@RequestBody LoginRequest loginRequest, @RequestBody Party party){
-        Optional<User> existingUser=userService.singleUserByEmail(loginRequest.getEmail());
-        if(existingUser.isPresent()){
-            userService.joinParty(party, existingUser.get());
-            return ResponseEntity.ok("User found and joined the party");
+    @PostMapping("/join_party/{email}")
+    public ResponseEntity<?> joinParty(@PathVariable String email, @RequestBody Party party){
+        String s = "-->unable to join the user";
+        try{
+            Optional<User> existingUser = userService.singleUserByEmail(email);
+            if(!existingUser.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            userService.joinParty(party,existingUser.get());
+            return ResponseEntity.ok("User joined the party");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-    }*/
-}
-
+        catch (IllegalArgumentException e)
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()+s);
+        }
+        catch (IllegalStateException e)
+        {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage()+s);
+        }
+    }

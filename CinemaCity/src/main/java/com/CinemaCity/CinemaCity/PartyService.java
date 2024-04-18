@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ public class PartyService {
         try {
             if (optionalHost.isPresent()) {
                 party.setHostUser(optionalHost.get());
+                party.setJoined_participants(new ArrayList<>());
                 return partyRepository.save(party);
             } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The host doesn't exist!");
         } catch (Exception e) {
