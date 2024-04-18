@@ -8,7 +8,7 @@ const InitialPage = () => {
                 <h1 style={{ margin: 0 }}>CinemaHome</h1>
                 <div>
                     <Link to="/signin">
-                        <button style={{ backgroundColor: '#D9D9D9', border: 'none', color: 'black', padding: '15px 32px', textAlign: 'center', textDecoration: 'none', display: 'inline-block', fontSize: '16px', margin: '4px 2px', cursor: 'pointer' }}>Sign In</button>
+                        <button style={{ backgroundColor: '#D9D9D9', border: 'none', color: 'black', padding: '15px 32px', textAlign: 'center', textDecoration: 'none', display: 'inline-block', fontSize: '16px', margin: '4px 2px', cursor: 'pointer' }}>Sign Up</button>
                     </Link>
                     <Link to="/login">
                         <button style={{ backgroundColor: '#D9D9D9', border: 'none', color: 'black', padding: '15px 32px', textAlign: 'center', textDecoration: 'none', display: 'inline-block', fontSize: '16px', margin: '4px 2px', cursor: 'pointer' }}>Log In</button>

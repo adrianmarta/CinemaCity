@@ -93,6 +93,7 @@ const MainPage = () => {
                         <p>{party.description}</p>
                         <p>{party.location}</p>
                         <p>{party.party_planer_name}</p>
+                        <p>{party.restrictions}</p>
                         <p>{party.reviews}</p>
                         {/* Add more party details here */}
                     </div>
