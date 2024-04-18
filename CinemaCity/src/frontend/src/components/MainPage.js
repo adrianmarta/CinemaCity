@@ -9,6 +9,9 @@ const MainPage = () =>{
                 <Link to="/">
                     <button style={{ backgroundColor: '#D9D9D9', border: 'none', color: 'black', padding: '15px 32px', textAlign: 'center', textDecoration: 'none', display: 'inline-block', fontSize: '16px', margin: '4px 2px', cursor: 'pointer' }}>Sign out</button>
                 </Link>
+                <Link to="/parties">
+                    <button style={{ backgroundColor: '#D9D9D9', border: 'none', color: 'black', padding: '15px 32px', textAlign: 'center', textDecoration: 'none', display: 'inline-block', fontSize: '16px', margin: '4px 2px', cursor: 'pointer' }}>Create Party</button>
+                </Link>
             </div>
         </header>
 

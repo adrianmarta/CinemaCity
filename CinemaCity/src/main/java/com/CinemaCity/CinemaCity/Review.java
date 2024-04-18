@@ -12,9 +12,10 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review {
-    @Id
+
     private String review;
     private int rating;
+    @Id
     @DocumentReference
     private User reviewer;
 

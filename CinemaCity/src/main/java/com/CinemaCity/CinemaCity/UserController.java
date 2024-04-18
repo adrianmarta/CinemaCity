@@ -15,25 +15,28 @@ import java.util.OptionalLong;
 public class UserController {
     @Autowired
     private UserService userService;
+
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers()
-    {
+    public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<List<User>>(userService.AllUsers(), HttpStatus.OK);
     }
+
     @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody User user) {
         Optional<User> existingUser = userService.singleUserByEmail(user.getEmail());
-        if(existingUser.isPresent()){
-            throw new ResponseStatusException(HttpStatus.CONFLICT,"The email already exists!");
-        }
-        else {
+        if (existingUser.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The email already exists!");
+        } else {
             User newUser = userService.createUser(user);
-            return new ResponseEntity<>(newUser, HttpStatus.CREATED);}
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        }
     }
+
     @GetMapping("/{SignIn}")
-    public ResponseEntity<Optional<User>> findUserByEmail(@PathVariable String SignIn){
-        return new ResponseEntity<Optional<User>>(userService.singleUserByEmail(SignIn),HttpStatus.OK);
+    public ResponseEntity<Optional<User>> findUserByEmail(@PathVariable String SignIn) {
+        return new ResponseEntity<Optional<User>>(userService.singleUserByEmail(SignIn), HttpStatus.OK);
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         Optional<User> existingUser = userService.singleUserByEmail(loginRequest.getEmail());
@@ -51,21 +54,19 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
+
     @PostMapping("/join_party/{email}")
-    public ResponseEntity<?> joinParty(@PathVariable String email, @RequestBody Party party){
+    public ResponseEntity<?> joinParty(@PathVariable String email, @RequestBody Party party) {
         String s = "-->unable to join the user";
-        try{
+        try {
             Optional<User> existingUser = userService.singleUserByEmail(email);
-            if(!existingUser.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-            userService.joinParty(party,existingUser.get());
+            if (!existingUser.isPresent()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            userService.joinParty(party, existingUser.get());
             return ResponseEntity.ok("User joined the party");
-        }
-        catch (IllegalArgumentException e)
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()+s);
-        }
-        catch (IllegalStateException e)
-        {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage()+s);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage() + s);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage() + s);
         }
     }
+}
