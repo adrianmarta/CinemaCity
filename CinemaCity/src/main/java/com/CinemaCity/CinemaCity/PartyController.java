@@ -1,5 +1,6 @@
 package com.CinemaCity.CinemaCity;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,4 +22,11 @@ public class PartyController {
     @PostMapping
     public ResponseEntity<Party> createParty( @RequestBody Party party){
         return new ResponseEntity<>(partyService.createParty(party), HttpStatus.CREATED);}
+    @GetMapping("/{partyId}")
+    public ResponseEntity<Party> partyDetails(@PathVariable ObjectId partyId){
+        //ObjectId objectId = new ObjectId(partyId);
+        Optional<Party> p = partyService.getPartyById(partyId);
+        return p.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

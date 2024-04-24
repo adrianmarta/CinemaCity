@@ -89,10 +89,10 @@ const MainPage = () => {
                             boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)"
                         }}
                     >
-                        <h2>{party.film_name}</h2>
+                        <h2>{party.party_planer_name}</h2>
+                        <p>{party.film_name}</p>
                         <p>{party.description}</p>
                         <p>{party.location}</p>
-                        <p>{party.party_planer_name}</p>
                         <p>{party.restrictions}</p>
                         <p>{party.reviews}</p>
                         {/* Add more party details here */}

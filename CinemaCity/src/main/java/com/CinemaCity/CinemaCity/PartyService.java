@@ -1,5 +1,6 @@
 package com.CinemaCity.CinemaCity;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,8 @@ public class PartyService {
     }
     private void validateParty(Party party){
         if(party.getMax_participants()<=0)throw new RuntimeException("Maximum participants must be greater than 0!");
+    }
+    public Optional<Party> getPartyById(ObjectId partyId){
+        return partyRepository.findPartyByObjectId(partyId);
     }
 }
