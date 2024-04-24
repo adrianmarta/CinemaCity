@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -39,5 +40,14 @@ public class PartyService {
     }
     public Optional<Party> getPartyById(ObjectId partyId){
         return partyRepository.findPartyByObjectId(partyId);
+    }
+    @Transactional
+    public void joinParty(Party party,User user){
+        //System.out.println("Attempting to join user " + user.getEmail() + " to party " + party.getObjectId());
+        //System.out.println("Party before joining: " + party);
+        if(party.getJoined_participants() != null && party.getJoined_participants().contains(user))
+            throw new IllegalStateException("User already joined");
+        party.getJoined_participants().add(user);
+        partyRepository.save(party);
     }
 }

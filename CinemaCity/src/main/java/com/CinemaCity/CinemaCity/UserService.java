@@ -25,11 +25,5 @@ public class UserService {
     public Optional<User> singleUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
-    @Transactional
-    public void joinParty(Party party,User user){
-        if(party == null) throw new IllegalArgumentException("Party doesn't exist");
-        if(party.getJoined_participants() != null && party.getJoined_participants().contains(user))
-            throw new IllegalStateException("User already joined");
-        party.getJoined_participants().add(user);
-    }
+
 }

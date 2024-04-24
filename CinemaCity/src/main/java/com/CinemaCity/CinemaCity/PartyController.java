@@ -15,6 +15,8 @@ import java.util.Optional;
 public class PartyController {
     @Autowired
     private PartyService partyService;
+    @Autowired
+    private UserService userService;
     @GetMapping
     public ResponseEntity<List<Party>> getAllParties(){
         return new ResponseEntity<>(partyService.AllParties(), HttpStatus.OK);
@@ -28,5 +30,22 @@ public class PartyController {
         Optional<Party> p = partyService.getPartyById(partyId);
         return p.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/join_party/{objectId}")
+    public ResponseEntity<?> joinParty( @RequestBody String email,  @PathVariable ObjectId objectId) {
+        String s = "-->unable to join the user";
+        try {
+            Optional<User> existingUser = userService.singleUserByEmail(email);
+            Optional<Party> existingParty = partyService.getPartyById(objectId);
+            if (existingUser.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found :(");
+            if(existingParty.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Party not found");
+            //System.out.println("User details: " + existingUser.get());
+            //System.out.println("Party details: " + existingParty.get());
+            partyService.joinParty(existingParty.get(), existingUser.get());
+            return ResponseEntity.ok("User joined the party");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage() + s);
+        }
     }
 }
