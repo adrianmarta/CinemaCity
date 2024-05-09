@@ -40,8 +40,6 @@ public class PartyController {
             Optional<Party> existingParty = partyService.getPartyById(objectId);
             if (existingUser.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found :(");
             if(existingParty.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Party not found");
-            //System.out.println("User details: " + existingUser.get());
-            //System.out.println("Party details: " + existingParty.get());
             partyService.joinParty(existingParty.get(), existingUser.get());
             return ResponseEntity.ok("User joined the party");
         } catch (IllegalStateException e) {
