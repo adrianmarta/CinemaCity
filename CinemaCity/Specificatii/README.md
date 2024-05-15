@@ -33,10 +33,10 @@ Pagina party details
     #Locatia si data(incluzand poze cu locatia)
     #buton de confirmare(I'm in) catre pagina apply to party
 
-Pagina aply to party
-    #Adaugare nume
+Pagina join party
+    #Adaugare email
     #Adaugare numar de persoane in plus(friends or family)
-    #Buton de adaugat un goodie pe care urmeaza sa il aduca(se pot adauga mai multe goodies)
+    #Checkbox de adaugat (minim)un goodie pe care urmeaza sa il aduca
     #Buton de submit
 
 Pagina review

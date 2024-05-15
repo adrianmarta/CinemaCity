@@ -1,15 +1,15 @@
-import {Link, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 
-const PartyDetails=()=> {
+const JoinParty = () => {
     const [party, setParty] = useState(null);
     const [objectIdString, setObjectIdString] = useState('');
     const { partyId } = useParams(); // Obține parametrul partyId din URL
 
     useEffect(() => {
         fetchPartyDetails();
-        setObjectIdString(partyId.toString()); // Convert the partyId to a string and store it in objectIdString
+        setObjectIdString(partyId.toString());
     }, [partyId]);
 
     const fetchPartyDetails = async () => {
@@ -65,18 +65,14 @@ const PartyDetails=()=> {
             >
                 <h2>{party.hostUser.name}'s {party.party_planer_name} party</h2>
                 <p>Film: {party.film_name}</p>
-                <p>Description: {party.description}</p>
-                <p>Location: {party.location}</p>
-                <p>Restrictions: {party.restrictions}</p>
-                <p>Joined people: {party.joined_participants ? `${party.joined_participants.length}/${party.max_participants}` : 'Loading...'} </p>
+                <p>Remaining seats: {party.joined_participants ? `${party.max_participants-party.joined_participants.length}/${party.max_participants}` : 'Loading...'} </p>
 
                 {/* Add more party details here */}
             </div>
-            <Link to={`/join-party/${objectIdString}`}>
-                <button className="btn">View Details</button>
+            <Link to={`/party-details/${objectIdString}`}>
+                <button className="btn">Back to party-details</button>
             </Link>
-            <Link to="/main-page">Back to Main Page</Link>
         </div>
     );
 };
-export default PartyDetails;
+export default JoinParty;
