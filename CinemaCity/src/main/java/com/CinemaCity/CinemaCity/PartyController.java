@@ -33,12 +33,12 @@ public class PartyController {
     }
 
     @PostMapping("/join_party/{objectId}")
-    public ResponseEntity<?> joinParty( @RequestBody String email,  @PathVariable ObjectId objectId) {
+    public ResponseEntity<?> joinParty( @RequestBody JoinRequest joinRequest,  @PathVariable ObjectId objectId) {
         String s = "-->unable to join the user";
         try {
-            Optional<User> existingUser = userService.singleUserByEmail(email);
+            Optional<User> existingUser = userService.singleUserByEmail(joinRequest.getEmail());
             Optional<Party> existingParty = partyService.getPartyById(objectId);
-            if (existingUser.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found :(");
+            if (existingUser.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with this mail: \"" + joinRequest.getEmail() + "\" not found :(");
             if(existingParty.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Party not found");
             partyService.joinParty(existingParty.get(), existingUser.get());
             return ResponseEntity.ok("User joined the party");
