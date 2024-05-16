@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Link ,useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import './style.css';
 
 const MainPage = () => {
     const [parties, setParties] = useState([]);
-    const navigate = useNavigate();
+
     useEffect(() => {
         fetchParties();
     }, []);
 
     const fetchParties = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/parties"); // Assuming your backend server is running on the same host
+            const response = await axios.get("http://localhost:8080/parties");
+            console.log("Response from server:", response.data);
             setParties(response.data);
         } catch (error) {
             console.error("Error fetching parties:", error);
         }
-    };
-    const handlePartyClick = (partyId) => {
-        //const partyIdString = partyId.toString();
-        // Navigate to party details page when a party is clicked
-        navigate(`/parties/${partyId}`);
     };
 
     return (
@@ -85,9 +81,9 @@ const MainPage = () => {
                 }}
             >
                 {parties.map(party => (
-                    <div className="wrapper-listing"
+                    <div
                         key={party.objectId}
-                         onClick={() => handlePartyClick(party.objectId)}
+                        className="wrapper-listing"
                         style={{
                             border: "1px solid #ccc",
                             padding: "20px",
@@ -102,6 +98,9 @@ const MainPage = () => {
                         <p>{party.restrictions}</p>
                         <p>{party.reviews}</p>
                         {/* Add more party details here */}
+                        <Link to={party.objectIdString ? `/party-details/${party.objectIdString}` : "/main-page"}> {/* Verificare pentru objectIdString */}
+                            <button className="btn">View Details</button>
+                        </Link>
                     </div>
                 ))}
             </div>

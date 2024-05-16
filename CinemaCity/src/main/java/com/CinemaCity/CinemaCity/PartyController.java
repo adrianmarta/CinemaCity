@@ -20,7 +20,11 @@ public class PartyController {
     private UserService userService;
     @GetMapping
     public ResponseEntity<List<Party>> getAllParties(){
-        return new ResponseEntity<>(partyService.AllParties(), HttpStatus.OK);
+        List<Party> parties = partyService.AllParties();
+        for (Party party : parties) {
+            party.setObjectIdString(party.getObjectId().toString());
+        }
+        return new ResponseEntity<>(parties, HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<Party> createParty( @RequestBody Party party){
@@ -28,18 +32,23 @@ public class PartyController {
     @GetMapping("/parties/{partyId}")
     public ResponseEntity<Party> partyDetails(@PathVariable ObjectId partyId){
         //ObjectId objectId = new ObjectId(partyId);
-        Optional<Party> p = partyService.getPartyById(partyId);
-        return p.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Party> optionalParty = partyService.getPartyById(partyId);
+        if (optionalParty.isPresent()) {
+            Party party = optionalParty.get();
+            party.setObjectIdString(party.getObjectId().toString());
+            return ResponseEntity.ok(party);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/join_party/{objectId}")
-    public ResponseEntity<?> joinParty( @RequestBody String email,  @PathVariable ObjectId objectId) {
+    public ResponseEntity<?> joinParty( @RequestBody JoinRequest joinRequest,  @PathVariable ObjectId objectId) {
         String s = "-->unable to join the user";
         try {
-            Optional<User> existingUser = userService.singleUserByEmail(email);
+            Optional<User> existingUser = userService.singleUserByEmail(joinRequest.getEmail());
             Optional<Party> existingParty = partyService.getPartyById(objectId);
-            if (existingUser.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found :(");
+            if (existingUser.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with this mail: \"" + joinRequest.getEmail() + "\" not found :(");
             if(existingParty.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Party not found");
             partyService.joinParty(existingParty.get(), existingUser.get());
             return ResponseEntity.ok("User joined the party");

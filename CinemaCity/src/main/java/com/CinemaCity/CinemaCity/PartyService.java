@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.Optional;
 
 @Service
 public class PartyService {
+    private static final Logger logger = LoggerFactory.getLogger(PartyService.class);
 
     @Autowired
     public PartyRepository partyRepository;
@@ -43,11 +47,19 @@ public class PartyService {
     }
     @Transactional
     public void joinParty(Party party,User user){
-        //System.out.println("Attempting to join user " + user.getEmail() + " to party " + party.getObjectId());
-        //System.out.println("Party before joining: " + party);
+
+        logger.info("Attempting to join user {} to party {}", user.getEmail(), party.getObjectId());
+        logger.debug("Party before joining: {}", party);
+
         if(party.getJoined_participants() != null && party.getJoined_participants().contains(user))
-            throw new IllegalStateException("User already joined");
+                throw new IllegalStateException("User already joined");
+        if (party.getHostUser() == user)
+                throw new IllegalStateException("You are the host and you can't join as a new outside participant");
+
         party.getJoined_participants().add(user);
+
+        logger.info("After user {} joined to party {}", user.getEmail(), party.getObjectId());
+        logger.debug("Party after joining: {}", party);
         partyRepository.save(party);
     }
 }

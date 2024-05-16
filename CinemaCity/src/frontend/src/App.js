@@ -7,6 +7,7 @@ import MainPage from "./components/MainPage";
 import createParty from "./components/createParty";
 import CreateParty from "./components/createParty";
 import PartyDetails from "./components/PartyDetails";
+import JoinParty from "./components/JoinParty";
 
 function App() {
     return (
@@ -17,7 +18,8 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/main-page" element={<MainPage/>}/>
                 <Route path="/parties" element={<CreateParty/>}/>
-                <Route path="/parties/:partyId" element={<PartyDetails />}/>
+                <Route path="/party-details/:partyId" element={<PartyDetails />} />
+                <Route path="/join-party/:partyId" element={<JoinParty />} />
             </Routes>
         </Router>
     );
