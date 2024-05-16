@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate } from "react-router-dom";
 import axios from "axios";
 import './style.css';
 
 const MainPage = () => {
     const [parties, setParties] = useState([]);
-
+    const navigate = useNavigate();
     useEffect(() => {
         fetchParties();
     }, []);
@@ -17,6 +17,11 @@ const MainPage = () => {
         } catch (error) {
             console.error("Error fetching parties:", error);
         }
+    };
+    const handlePartyClick = (partyId) => {
+        //const partyIdString = partyId.toString();
+        // Navigate to party details page when a party is clicked
+        navigate(`/parties/${partyId}`);
     };
 
     return (
@@ -82,6 +87,7 @@ const MainPage = () => {
                 {parties.map(party => (
                     <div className="wrapper-listing"
                         key={party.objectId}
+                         onClick={() => handlePartyClick(party.objectId)}
                         style={{
                             border: "1px solid #ccc",
                             padding: "20px",

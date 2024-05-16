@@ -17,7 +17,7 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/main-page" element={<MainPage/>}/>
                 <Route path="/parties" element={<CreateParty/>}/>
-                <Route path="/party-details" element={<PartyDetails/>}/>
+                <Route path="/parties/:partyId" element={<PartyDetails />}/>
             </Routes>
         </Router>
     );

@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-@CrossOrigin("http://localhost:3000/parties")
+@CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
 @RequestMapping("/parties")
 public class PartyController {
@@ -24,7 +25,7 @@ public class PartyController {
     @PostMapping
     public ResponseEntity<Party> createParty( @RequestBody Party party){
         return new ResponseEntity<>(partyService.createParty(party), HttpStatus.CREATED);}
-    @GetMapping("/{partyId}")
+    @GetMapping("/parties/{partyId}")
     public ResponseEntity<Party> partyDetails(@PathVariable ObjectId partyId){
         //ObjectId objectId = new ObjectId(partyId);
         Optional<Party> p = partyService.getPartyById(partyId);
