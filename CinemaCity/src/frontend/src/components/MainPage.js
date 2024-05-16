@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import './style.css';
 
 const MainPage = () => {
     const [parties, setParties] = useState([]);
-    const [objectIdString, setObjectIdString] = useState(''); // Stocăm partyId ca și șir de caractere
-    const { partyId } = useParams(); // Adăugăm useParams pentru a obține partyId din URL
 
     useEffect(() => {
         fetchParties();
-        if (partyId) {
-            setObjectIdString(partyId.toString());
-        }
-    }, [partyId]);
+    }, []);
 
     const fetchParties = async () => {
         try {
             const response = await axios.get("http://localhost:8080/parties");
+            console.log("Response from server:", response.data);
             setParties(response.data);
         } catch (error) {
             console.error("Error fetching parties:", error);
@@ -86,7 +82,7 @@ const MainPage = () => {
             >
                 {parties.map(party => (
                     <div
-                        key={party.objectId.toString()}
+                        key={party.objectId}
                         className="wrapper-listing"
                         style={{
                             border: "1px solid #ccc",
@@ -102,7 +98,7 @@ const MainPage = () => {
                         <p>{party.restrictions}</p>
                         <p>{party.reviews}</p>
                         {/* Add more party details here */}
-                        <Link to={objectIdString ? `/party-details/${objectIdString}` : "/"}> {/* Verificare pentru objectIdString */}
+                        <Link to={party.objectIdString ? `/party-details/${party.objectIdString}` : "/main-page"}> {/* Verificare pentru objectIdString */}
                             <button className="btn">View Details</button>
                         </Link>
                     </div>

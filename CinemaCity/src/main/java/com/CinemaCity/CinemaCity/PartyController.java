@@ -19,7 +19,11 @@ public class PartyController {
     private UserService userService;
     @GetMapping
     public ResponseEntity<List<Party>> getAllParties(){
-        return new ResponseEntity<>(partyService.AllParties(), HttpStatus.OK);
+        List<Party> parties = partyService.AllParties();
+        for (Party party : parties) {
+            party.setObjectIdString(party.getObjectId().toString());
+        }
+        return new ResponseEntity<>(parties, HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<Party> createParty( @RequestBody Party party){
@@ -27,9 +31,14 @@ public class PartyController {
     @GetMapping("/{partyId}")
     public ResponseEntity<Party> partyDetails(@PathVariable ObjectId partyId){
         //ObjectId objectId = new ObjectId(partyId);
-        Optional<Party> p = partyService.getPartyById(partyId);
-        return p.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Party> optionalParty = partyService.getPartyById(partyId);
+        if (optionalParty.isPresent()) {
+            Party party = optionalParty.get();
+            party.setObjectIdString(party.getObjectId().toString());
+            return ResponseEntity.ok(party);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/join_party/{objectId}")

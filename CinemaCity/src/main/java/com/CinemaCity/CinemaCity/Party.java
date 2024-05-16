@@ -18,6 +18,7 @@ import java.util.List;
 public class Party {
     @Id
     private ObjectId objectId;
+    private String objectIdString;
     private String party_planer_name;
     private String film_name, description, location, restrictions;
     private List<String> goodies;

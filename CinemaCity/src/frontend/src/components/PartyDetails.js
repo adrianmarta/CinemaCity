@@ -73,9 +73,10 @@ const PartyDetails=()=> {
                 {/* Add more party details here */}
             </div>
             <Link to={`/join-party/${objectIdString}`}>
-                <button className="btn">View Details</button>
+                <button className="btn">I'm in</button>
             </Link>
-            <Link to="/main-page">Back to Main Page</Link>
+            <Link to="/main-page">
+                <button className="btn">Back to Main Page</button></Link>
         </div>
     );
 };
