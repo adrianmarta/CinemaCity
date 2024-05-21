@@ -1,10 +1,8 @@
-// src/components/SignUp.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import {FaEnvelope, FaLock, FaUser} from "react-icons/fa";
-import {Link, useNavigate} from "react-router-dom";
-import './style.css';
-
+import { FaUser } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import './createStyle.css';
 
 function CreateParty() {
     const [party_planer_name, setName] = useState('');
@@ -14,23 +12,34 @@ function CreateParty() {
     const [restrictions, setRestrictions] = useState('');
     const [goodies, setGoodies] = useState('');
     const [max_participants, setMax_participants] = useState('');
-    //const [hostUser, setHostuser] = useState('');
+    const [image, setImage] = useState(null);
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const [successMessage, setSuccessMessage] = useState('');
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const party = {
+            party_planer_name,
+            film_name,
+            description,
+            location,
+            restrictions,
+            goodies: goodies.split(',').map(item => item.trim()),
+            max_participants: parseInt(max_participants)
+        };
+
+        const formData = new FormData();
+        formData.append('party', new Blob([JSON.stringify(party)], { type: 'application/json' }));
+        if (image) {
+            formData.append('image', image);
+        }
+
         try {
-            const response = await axios.post('http://localhost:8080/parties', {
-                partyPlanerName: party_planer_name,
-                filmName: film_name,
-                description: description,
-                location: location,
-                restrictions: restrictions,
-                goodies: goodies.split(',').map(item => item.trim()), // Convert comma-separated string to an array
-                maxParticipants: parseInt(max_participants), // Convert to integer
+            const response = await axios.post('http://localhost:8080/parties', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
 
             setSuccessMessage('Party created successfully!');
@@ -49,82 +58,131 @@ function CreateParty() {
 
     return (
         <div>
-            <header style={{ backgroundColor: '#283548', color: '#fff', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <header
+                style={{
+                    backgroundColor: "#283548",
+                    color: "#fff",
+                    padding: "20px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                }}
+            >
                 <h1 style={{ margin: 0 }}>CinemaHome</h1>
+                <div>
+                    <Link to="/">
+                        <button
+                            style={{
+                                backgroundColor: "#D9D9D9",
+                                border: "none",
+                                color: "black",
+                                padding: "15px 32px",
+                                textAlign: "center",
+                                textDecoration: "none",
+                                display: "inline-block",
+                                fontSize: "16px",
+                                margin: "4px 2px",
+                                cursor: "pointer"
+                            }}
+                        >
+                            Sign out
+                        </button>
+                    </Link>
+                </div>
             </header>
             <div className="page">
                 <div className='wrapper'>
                     <div className="form-box register">
                         <form onSubmit={handleSubmit}>
-                            <h2>Create party</h2>
-                            {error && <p style={{ color: 'red' }}>{error.message}</p>}
-                            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-                            <div className="input-box">
-                                <input type="text"
-                                       placeholder='Name' required
-                                       value={party_planer_name}
-                                       onChange={(e) => setName(e.target.value)}
-                                />
-                                <FaUser className='icon'/>
+                            <h2>Create Party</h2>
+                            {error && <p className="error-message">{error.message}</p>}
+                            {successMessage && <p className="success-message">{successMessage}</p>}
+                            <div className="form-row">
+                                <div className="input-box">
+                                    <input
+                                        type="text"
+                                        placeholder='Name'
+                                        required
+                                        value={party_planer_name}
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
+                                    <FaUser className='icon' />
+                                </div>
+                                <div className="input-box">
+                                    <input
+                                        type="text"
+                                        placeholder='Film name'
+                                        required
+                                        value={film_name}
+                                        onChange={(e) => setFilm_name(e.target.value)}
+                                    />
+                                </div>
                             </div>
-                            <div className="input-box">
-                                <input type="text"
-                                       placeholder='Film name' required
-                                       value={film_name}
-                                       onChange={(e) => setFilm_name(e.target.value)}
-                                />
-
+                            <div className="form-row">
+                                <div className="input-box">
+                                    <input
+                                        type="text"
+                                        placeholder="Description"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    />
+                                </div>
+                                <div className="input-box">
+                                    <input
+                                        type="text"
+                                        placeholder="Location"
+                                        required
+                                        value={location}
+                                        onChange={(e) => setLocation(e.target.value)}
+                                    />
+                                </div>
                             </div>
-                            <div className="input-box">
-                                <input type="text"
-                                placeholder="description"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                               />
+                            <div className="form-row">
+                                <div className="input-box">
+                                    <input
+                                        type="text"
+                                        placeholder="Restrictions"
+                                        required
+                                        value={restrictions}
+                                        onChange={(e) => setRestrictions(e.target.value)}
+                                    />
+                                </div>
+                                <div className="input-box">
+                                    <input
+                                        type="text"
+                                        placeholder="Goodies"
+                                        required
+                                        value={goodies}
+                                        onChange={(e) => setGoodies(e.target.value)}
+                                    />
+                                </div>
                             </div>
-                            <div className="input-box">
-                                <input type="text"
-                                       placeholder="location" required
-                                       value={location}
-                                       onChange={(e) => setLocation(e.target.value)}
-                                />
-
-                            </div>
-
-                            <div className="input-box">
-                                <input type="text"
-                                       placeholder="restrictions" required
-                                       value={restrictions}
-                                       onChange={(e) => setRestrictions(e.target.value)}
-                                />
-
-                            </div>
-                            <div className="input-box">
-                                <input type="text"
-                                       placeholder="goodies" required
-                                       value={goodies}
-                                       onChange={(e) => setGoodies(e.target.value)}
-                                />
-
-                            </div>
-                            <div className="input-box">
-                                <input type="number"
-                                       placeholder="max participants" required
-                                       value={max_participants}
-                                       onChange={(e) => setMax_participants(e.target.value)}
-                                />
-
+                            <div className="form-row">
+                                <div className="input-box">
+                                    <input
+                                        type="number"
+                                        placeholder="Max participants"
+                                        required
+                                        value={max_participants}
+                                        onChange={(e) => setMax_participants(e.target.value)}
+                                    />
+                                </div>
+                                <div className="input-box">
+                                    <input
+                                        type="file"
+                                        placeholder="upload images of home"
+                                        className="file-input"
+                                        onChange={(e) => setImage(e.target.files[0])}
+                                    />
+                                </div>
                             </div>
                             <button type="submit">Create</button>
-
-
-
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     );
-};
+}
 
 export default CreateParty;

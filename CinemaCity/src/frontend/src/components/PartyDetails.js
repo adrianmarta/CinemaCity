@@ -1,31 +1,39 @@
-import {Link, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from 'axios';
+import './style.css';
 
-const PartyDetails=()=> {
+const PartyDetails = () => {
     const [party, setParty] = useState(null);
-    const [objectIdString, setObjectIdString] = useState('');
-    const { partyId } = useParams(); // Obține parametrul partyId din URL
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { partyId } = useParams();
 
-    useEffect(() => {
-        fetchPartyDetails();
-        setObjectIdString(partyId.toString()); // Convert the partyId to a string and store it in objectIdString
-    }, [partyId]);
-
-    const fetchPartyDetails = async () => {
+    const fetchPartyDetails = useCallback(async () => {
         try {
             const response = await axios.get(`http://localhost:8080/parties/${partyId}`);
             setParty(response.data);
+            setLoading(false);
         } catch (error) {
-            console.error("Error fetching party details:", error);
+            setError("Error fetching party details");
+            setLoading(false);
         }
-    };
+    }, [partyId]);
 
-    if (!party) {
-        return <div>Loading...</div>;
+    useEffect(() => {
+        fetchPartyDetails();
+    }, [fetchPartyDetails]);
+
+    if (loading) {
+        return <div className="loading">Loading...</div>;
     }
+
+    if (error) {
+        return <div className="error">{error}</div>;
+    }
+
     return (
-        <div>
+        <div className="party-details">
             <header
                 style={{
                     backgroundColor: "#283548",
@@ -58,26 +66,24 @@ const PartyDetails=()=> {
                     </Link>
                 </div>
             </header>
-            <div
-                style={{
-                    padding: "20px"
-                }}
-            >
+            <div className="content">
                 <h2>{party.hostUser.name}'s {party.party_planer_name} party</h2>
                 <p>Film: {party.film_name}</p>
                 <p>Description: {party.description}</p>
                 <p>Location: {party.location}</p>
                 <p>Restrictions: {party.restrictions}</p>
-                <p>Joined people: {party.joined_participants ? `${party.joined_participants.length}/${party.max_participants}` : 'Loading...'} </p>
-
-                {/* Add more party details here */}
+                <p>Joined people: {party.joined_participants ? `${party.joined_participants.length}/${party.max_participants}` : 'Loading...'}</p>
             </div>
-            <Link to={`/join-party/${objectIdString}`}>
-                <button className="btn">I'm in</button>
-            </Link>
-            <Link to="/main-page">
-                <button className="btn">Back to Main Page</button></Link>
+            <div className="actions">
+                <Link to={`/join-party/${partyId}`}>
+                    <button className="btn join">I'm in</button>
+                </Link>
+                <Link to="/main-page">
+                    <button className="btn back">Back to Main Page</button>
+                </Link>
+            </div>
         </div>
     );
 };
+
 export default PartyDetails;
