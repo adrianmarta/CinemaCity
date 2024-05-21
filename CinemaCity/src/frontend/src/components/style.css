@@ -151,23 +151,106 @@ form button {
 .register-link p a:hover {
     text-decoration: underline;
 }
-.party-details-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+
+
+/* PartyDetails.css */
+
+/* PartyDetails.css */
 
 .party-details {
-    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    text-align: center; /* Center align text */
 }
 
-.party-details p {
-    margin-bottom: 10px;
+.header {
+    background-color: #283548;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.party-details p strong {
-    font-weight: bold;
+.header h1 {
+    margin: 0;
 }
+
+.content {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 20px auto; /* Center the content horizontally */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Limit the max width of the content */
+}
+
+.content h2 {
+    margin-bottom: 20px;
+    color: #495057;
+    font-size: 2em; /* Increase the font size */
+}
+
+.content p {
+    margin: 10px 0;
+    font-size: 1.2em; /* Increase the font size */
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.actions .btn {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.actions .btn:hover {
+    background-color: #0056b3;
+}
+
+.actions .btn.signout {
+    background-color: #6c757d;
+}
+
+.actions .btn.signout:hover {
+    background-color: #5a6268;
+}
+
+.actions .btn.join {
+    background-color: #28a745;
+}
+
+.actions .btn.join:hover {
+    background-color: #218838;
+}
+
+.actions .btn.back {
+    background-color: #283548;
+}
+
+.actions .btn.back:hover {
+    background-color: #283548;
+}
+
+.loading, .error {
+    text-align: center;
+    font-size: 18px;
+    margin: 20px;
+}
+/* style.css */
+
+
+

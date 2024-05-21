@@ -1,0 +1,101 @@
+
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px); /* Full height minus header height */
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 800px; /* Increased max width for two-column layout */
+    padding: 20px;
+    background-color: #283548;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.form-box {
+    width: 100%;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-size: 1.8em;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.input-box {
+    position: relative;
+    width: 48%;
+}
+
+.input-box input,
+.input-box textarea {
+    width: 100%;
+    padding: 10px 10px 10px 40px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-box textarea {
+    resize: none;
+    height: 100px; /* Height for the textarea */
+}
+
+.input-box input:focus,
+.input-box textarea:focus {
+    border-color: #35ffff;
+}
+
+.input-box .icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    color: #6c757d;
+}
+
+.file-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1em;
+    margin-top: 10px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.file-input:focus {
+    border-color: #35ffff;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #283548;
+    color: #ffffff;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #35ffff;
+}
+

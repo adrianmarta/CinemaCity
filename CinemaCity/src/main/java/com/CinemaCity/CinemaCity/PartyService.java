@@ -26,19 +26,26 @@ public class PartyService {
     public List<Party> AllParties(){
         return partyRepository.findAll();
     }
-    public Party createParty (Party party) {
-        Optional<User> optionalHost = userService.singleUserByEmail(party.getHostUser().getEmail());
+    public Party createParty(Party party) {
         validateParty(party);
         try {
-            if (optionalHost.isPresent()) {
-                party.setHostUser(optionalHost.get());
-                party.setJoined_participants(new ArrayList<>());
-                return partyRepository.save(party);
-            } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The host doesn't exist!");
+            if (party.getHostUser() != null) {
+                Optional<User> optionalHost = userService.singleUserByEmail(party.getHostUser().getEmail());
+                if (optionalHost.isPresent()) {
+                    party.setHostUser(optionalHost.get());
+                    party.setJoined_participants(new ArrayList<>());
+                    return partyRepository.save(party);
+                } else {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The host doesn't exist!");
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Host user must be set!");
+            }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
     private void validateParty(Party party){
         if(party.getMax_participants()<=0)throw new RuntimeException("Maximum participants must be greater than 0!");
     }
@@ -46,20 +53,29 @@ public class PartyService {
         return partyRepository.findPartyByObjectId(partyId);
     }
     @Transactional
-    public void joinParty(Party party,User user){
-
+    public void joinParty(Party party, User user, String goodie) {
         logger.info("Attempting to join user {} to party {}", user.getEmail(), party.getObjectId());
         logger.debug("Party before joining: {}", party);
 
-        if(party.getJoined_participants() != null && party.getJoined_participants().contains(user))
-                throw new IllegalStateException("User already joined");
-        if (party.getHostUser() == user)
-                throw new IllegalStateException("You are the host and you can't join as a new outside participant");
+        if (party.getJoined_participants() != null && party.getJoined_participants().contains(user)) {
+            throw new IllegalStateException("User already joined");
+        }
+        if (party.getHostUser().equals(user)) {
+            throw new IllegalStateException("You are the host and you can't join as a new outside participant");
+        }
 
         party.getJoined_participants().add(user);
 
-        logger.info("After user {} joined to party {}", user.getEmail(), party.getObjectId());
-        logger.debug("Party after joining: {}", party);
+        if (goodie != null && !goodie.isEmpty()) {
+            List<String> goodies = party.getGoodies() != null ? party.getGoodies() : new ArrayList<>();
+            goodies.add(goodie);
+            party.setGoodies(goodies);
+            logger.info("Added goodie {} to party {}", goodie, party.getObjectId());
+        }
+
         partyRepository.save(party);
+
+        logger.info("User {} joined to party {}", user.getEmail(), party.getObjectId());
+        logger.debug("Party after joining: {}", party);
     }
 }

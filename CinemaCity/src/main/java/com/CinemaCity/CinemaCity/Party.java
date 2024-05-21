@@ -27,6 +27,7 @@ public class Party {
     private User hostUser;
     @DocumentReference
     private List<User> joined_participants;
+    private List<String> imageUrls;
 
     //private location?
 
