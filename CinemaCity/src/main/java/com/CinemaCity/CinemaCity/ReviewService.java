@@ -22,11 +22,11 @@ public class ReviewService {
         if(reviewer.isPresent()) {
             review.setReviewer(reviewer.get());
         }else throw new IllegalStateException("The reviewer doesn't exist");
-        review.setIdString(review.getId().toHexString());
         Optional<Party> party=partyService.getPartyById(partyId);
         if(party.isEmpty()) throw new IllegalStateException("Can't find the party");
         else {
             Review finalReview = reviewRepository.save(review);
+            finalReview.setIdString(finalReview.getId().toHexString());
             party.get().getHostUser().getReviewId().add(finalReview.getIdString());
             userService.updateUser(party.get().getHostUser());
             return finalReview;

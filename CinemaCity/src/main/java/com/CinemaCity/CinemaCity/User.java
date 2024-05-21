@@ -20,7 +20,6 @@ public class User {
     @Id
     private String email;
     private String password;
-
     private List<String> reviewId;
     public User(String name, int age, String gender, String email, String password)
     {
