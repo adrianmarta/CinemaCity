@@ -19,11 +19,15 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        user.setReviewId(new ArrayList<>());
         return userRepository.save(user);
     }
 
     public Optional<User> singleUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
+    }
+    public void updateUser(User user){
+        userRepository.save(user);
     }
 
 }

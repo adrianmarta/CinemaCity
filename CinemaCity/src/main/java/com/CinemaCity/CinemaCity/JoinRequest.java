@@ -1,6 +1,6 @@
 package com.CinemaCity.CinemaCity;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 
 @Data

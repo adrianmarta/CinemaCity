@@ -20,8 +20,8 @@ public class User {
     @Id
     private String email;
     private String password;
-    @DocumentReference
-    private List<Review> reviews;
+
+    private List<String> reviewId;
     public User(String name, int age, String gender, String email, String password)
     {
         this.Name=name;

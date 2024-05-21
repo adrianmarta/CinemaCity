@@ -19,7 +19,7 @@ public class PartyService {
     private static final Logger logger = LoggerFactory.getLogger(PartyService.class);
 
     @Autowired
-    public PartyRepository partyRepository;
+    private PartyRepository partyRepository;
     @Autowired
     private UserService userService;
 
@@ -56,6 +56,7 @@ public class PartyService {
         if (party.getHostUser() == user)
                 throw new IllegalStateException("You are the host and you can't join as a new outside participant");
 
+        assert party.getJoined_participants() != null;
         party.getJoined_participants().add(user);
 
         logger.info("After user {} joined to party {}", user.getEmail(), party.getObjectId());
