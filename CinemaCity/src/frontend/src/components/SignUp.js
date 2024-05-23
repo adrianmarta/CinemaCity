@@ -27,7 +27,15 @@ function SignUp() {
             setSuccessMessage('User created successfully!');
             setError('');
             console.log('User created', JSON.stringify(response.data));
-            navigate('/main-page'); // Navigate after successful form submission
+
+            // After successful user creation, automatically login the user
+            const loginResponse = await axios.post('http://localhost:8080/users/login', {
+                email,
+                password,
+            });
+            const { jwt } = loginResponse.data;
+            localStorage.setItem('token', jwt);
+            navigate('/main-page'); // Navigate after successful login
         } catch (error) {
             if (error && error.response && error.response.data) {
                 setError(error.response.data);
@@ -98,7 +106,7 @@ function SignUp() {
 
 
                             <div className="register-link">
-                                <p>Already have an account? <a href="/login">Log in</a></p>
+                                <p>Already have an account? <Link to="/login">Log in</Link></p>
                             </div>
                         </form>
                     </div>

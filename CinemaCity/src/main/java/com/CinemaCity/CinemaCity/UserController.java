@@ -3,6 +3,9 @@ package com.CinemaCity.CinemaCity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,6 +18,12 @@ import java.util.OptionalLong;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtUtil jwtUtil;
+
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -38,20 +47,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
-        Optional<User> existingUser = userService.singleUserByEmail(loginRequest.getEmail());
-        if (existingUser.isPresent()) {
-            User user = existingUser.get();
-            if (user.getPassword().equals(loginRequest.getPassword())) {
-                // Passwords match, login successful
-                return ResponseEntity.ok("Login successful");
-            } else {
-                // Passwords don't match, login failed
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect password");
-            }
-        } else {
-            // User with provided email not found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) throws Exception{
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+            );
+        } catch (Exception e) {
+            throw new Exception("Incorrect email or password", e);
         }
+        final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
+        final String jwt = jwtUtil.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthResponse(jwt));
     }
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import './style.css';
 import { FaUser, FaLock } from "react-icons/fa";
 import axios from "axios";
-import {Link, useNavigate} from "react-router-dom"; // Import useNavigate for navigation
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -17,6 +17,8 @@ const Login = () => {
                 email,
                 password,
             });
+            const { jwt } = response.data; // Extract the JWT from the response
+            localStorage.setItem('token', jwt); // Store the token in localStorage
             console.log('Login successful', response.data);
             navigate('/main-page');
         } catch (error) {
@@ -24,6 +26,24 @@ const Login = () => {
             setError(error.response.data);
         }
     };
+    const logout = () => {
+        localStorage.removeItem('token');
+        navigate('/login');
+    };
+
+    axios.interceptors.request.use(
+        config => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                config.headers['Authorization'] = 'Bearer ' + token;
+            }
+            return config;
+        },
+        error => {
+            return Promise.reject(error);
+        }
+    );
+
 
     return (
         <div>
@@ -60,7 +80,6 @@ const Login = () => {
                             </div>
 
                             <button type="submit">Login</button>
-
 
                             <div className="register-link">
                                 <p>Don't have an account? <a href="/signin">Sign Up</a></p>

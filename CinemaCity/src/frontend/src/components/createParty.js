@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import './createStyle.css';
 
 function CreateParty() {
-    const [party_planer_name, setName] = useState('');
     const [film_name, setFilm_name] = useState('');
     const [description, setDescription] = useState('');
     const [location, setLocation] = useState('');
@@ -14,13 +13,33 @@ function CreateParty() {
     const [max_participants, setMax_participants] = useState('');
     const [image, setImage] = useState(null);
     const [error, setError] = useState('');
-    const navigate = useNavigate();
     const [successMessage, setSuccessMessage] = useState('');
+    const [partyPlannerName, setPartyPlannerName] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Fetch party planner name from backend based on the logged-in user's email
+        const fetchPartyPlannerName = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/users', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}` // Pass the JWT token for authentication
+                    }
+                });
+                setPartyPlannerName(response.data.name); // Set the party planner name from the response
+            } catch (error) {
+                console.error('Failed to fetch party planner name:', error);
+                // Handle error
+            }
+        };
+
+        fetchPartyPlannerName();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const party = {
-            party_planer_name,
+            party_planer_name: partyPlannerName, // Use the party planner name fetched from the backend
             film_name,
             description,
             location,
@@ -54,7 +73,6 @@ function CreateParty() {
             }
         }
     };
-
 
     return (
         <div>
@@ -98,16 +116,7 @@ function CreateParty() {
                             {error && <p className="error-message">{error.message}</p>}
                             {successMessage && <p className="success-message">{successMessage}</p>}
                             <div className="form-row">
-                                <div className="input-box">
-                                    <input
-                                        type="text"
-                                        placeholder='Name'
-                                        required
-                                        value={party_planer_name}
-                                        onChange={(e) => setName(e.target.value)}
-                                    />
-                                    <FaUser className='icon' />
-                                </div>
+
                                 <div className="input-box">
                                     <input
                                         type="text"
@@ -172,7 +181,8 @@ function CreateParty() {
                                         type="file"
                                         placeholder="upload images of home"
                                         className="file-input"
-                                        onChange={(e) => setImage(e.target.files[0])}
+                                        onChange={(e) =>
+                                            setImage(e.target.files[0])}
                                     />
                                 </div>
                             </div>
