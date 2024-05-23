@@ -55,7 +55,6 @@ public class PartyController {
             return ResponseEntity.notFound().build();
         }
     }
-
     @PostMapping("/join_party/{objectId}")
     public ResponseEntity<?> joinParty( @RequestBody JoinRequest joinRequest,  @PathVariable ObjectId objectId) {
         String s = "-->unable to join the user";
