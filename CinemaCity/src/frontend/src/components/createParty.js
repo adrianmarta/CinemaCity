@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import './createStyle.css';
 
@@ -14,38 +13,43 @@ function CreateParty() {
     const [image, setImage] = useState(null);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const [partyPlannerName, setPartyPlannerName] = useState('');
+    const [hostUser, setHostUser] = useState(null); // State to store host user details
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch party planner name from backend based on the logged-in user's email
-        const fetchPartyPlannerName = async () => {
+        // Fetch user details from backend based on the logged-in user's email
+        const fetchUserDetails = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/users', {
+                const response = await axios.get('http://localhost:8080/users/profile', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}` // Pass the JWT token for authentication
                     }
                 });
-                setPartyPlannerName(response.data.name); // Set the party planner name from the response
+                setHostUser(response.data); // Set the host user details from the response
             } catch (error) {
-                console.error('Failed to fetch party planner name:', error);
-                // Handle error
+                console.error('Failed to fetch user details:', error);
+                setError('Failed to fetch user details');
             }
         };
 
-        fetchPartyPlannerName();
+        fetchUserDetails();
     }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!hostUser) {
+            setError('Host user details are missing');
+            return;
+        }
         const party = {
-            party_planer_name: partyPlannerName, // Use the party planner name fetched from the backend
+            party_planer_name: hostUser.name,
             film_name,
             description,
             location,
             restrictions,
             goodies: goodies.split(',').map(item => item.trim()),
-            max_participants: parseInt(max_participants)
+            max_participants: parseInt(max_participants),
+            hostUser: { email: hostUser.email } // Include host user details
         };
 
         const formData = new FormData();
@@ -116,7 +120,6 @@ function CreateParty() {
                             {error && <p className="error-message">{error.message}</p>}
                             {successMessage && <p className="success-message">{successMessage}</p>}
                             <div className="form-row">
-
                                 <div className="input-box">
                                     <input
                                         type="text"

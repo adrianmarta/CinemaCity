@@ -1,18 +1,19 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import './style.css'; // Assuming you have a CSS file for styles
 
-const JoinParty = () => {}
-   /* const [party, setParty] = useState(null);
-    const [objectIdString, setObjectIdString] = useState('');
+const JoinParty = () => {
+    const [party, setParty] = useState(null);
     const [newGoodie, setNewGoodie] = useState('');
     const [error, setError] = useState(null); // State for handling errors
     const { partyId } = useParams(); // Get the partyId from the URL
+    const [userEmail, setUserEmail] = useState(''); // State to store user email
+    const navigate = useNavigate(); // Hook for navigation
 
     useEffect(() => {
         fetchPartyDetails();
-        setObjectIdString(partyId.toString());
+        fetchUserProfile();
     }, [partyId]);
 
     const fetchPartyDetails = async () => {
@@ -25,15 +26,31 @@ const JoinParty = () => {}
         }
     };
 
-
+    const fetchUserProfile = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/users/profile', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}` // Pass the JWT token for authentication
+                }
+            });
+            setUserEmail(response.data.email); // Set the user email from the response
+        } catch (error) {
+            setError("Error fetching user profile.");
+            console.error("Error fetching user profile:", error);
+        }
+    };
 
     const handleJoinParty = async () => {
         try {
             const joinRequest = { email: userEmail, goodie: newGoodie };
-            await axios.post(`http://localhost:8080/parties/join_party/${partyId}`, joinRequest);
+            await axios.post(`http://localhost:8080/parties/join_party/${partyId}`, joinRequest, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}` // Include the JWT token
+                }
+            });
             fetchPartyDetails(); // Refresh party details
-            //fetchGoodies(); // Refresh goodies
             setNewGoodie(''); // Clear the input field
+            navigate(`/party-details/${partyId}`); // Redirect to party details page
         } catch (error) {
             console.error("Error joining party:", error);
         }
@@ -77,14 +94,12 @@ const JoinParty = () => {}
                     placeholder="Add a goodie"
                 />
                 <button onClick={handleJoinParty}>Join Party</button>
-                <Link to={`/party-details/${objectIdString}`}>
+                <Link to={`/party-details/${party.objectIdString}`}>
                     <button className="btn">Back to party-details</button>
                 </Link>
             </div>
         </div>
     );
 };
-
-    */
 
 export default JoinParty;
