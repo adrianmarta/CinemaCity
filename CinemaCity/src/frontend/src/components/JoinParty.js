@@ -63,14 +63,21 @@ const JoinParty = () => {
     if (!party) {
         return <div>Loading...</div>; // Display loading message while fetching data
     }
-
+    const handleSignOut = () => {
+        // Clear the JWT from local storage
+        localStorage.removeItem('token');
+        // Navigate to the login page or any other page you desire
+        navigate('/');
+    };
     return (
         <div>
             <header className="header">
                 <h1>CinemaHome</h1>
                 <div>
                     <Link to="/">
-                        <button className="sign-out-btn">
+                        <button
+                        onClick={handleSignOut}
+                            className="sign-out-btn">
                             Sign out
                         </button>
                     </Link>

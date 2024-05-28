@@ -19,11 +19,14 @@ const Login = () => {
             });
             const { jwt } = response.data; // Extract the JWT from the response
             localStorage.setItem('token', jwt); // Store the token in localStorage
+            localStorage.setItem('email', email);
             console.log('Login successful', response.data);
             navigate('/main-page');
         } catch (error) {
+
             console.error('Login failed', error.response.data);
             setError(error.response.data);
+            logout();
         }
     };
     const logout = () => {

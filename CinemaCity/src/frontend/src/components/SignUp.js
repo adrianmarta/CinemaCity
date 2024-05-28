@@ -37,13 +37,15 @@ function SignUp() {
             localStorage.setItem('token', jwt);
             navigate('/main-page'); // Navigate after successful login
         } catch (error) {
-            if (error && error.response && error.response.data) {
+            if (error.response && error.response.data) {
                 setError(error.response.data);
             } else {
                 console.error('User creation failed', error);
+                setError('User creation failed');
             }
         }
     };
+
 
     return (
         <div>
@@ -67,16 +69,16 @@ function SignUp() {
                             </div>
                             <div className="input-box">
                                 <input type="number"
-                                       placeholder='age' required
+                                       placeholder='Age' required
                                        value={age}
                                        onChange={(e) => setAge(e.target.value)}
                                 />
-
                             </div>
                             <div className="input-box">
                                 <select
                                     value={gender}
                                     onChange={(e) => setGender(e.target.value)}
+                                    required
                                 >
                                     <option value="">Select Gender</option>
                                     <option value="Male">Male</option>
@@ -86,25 +88,21 @@ function SignUp() {
                             </div>
                             <div className="input-box">
                                 <input type="text"
-                                       placeholder='email' required
+                                       placeholder='Email' required
                                        value={email}
                                        onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <FaEnvelope className='icon'/>
                             </div>
-
                             <div className="input-box">
                                 <input type="password"
-                                       placeholder='password' required
+                                       placeholder='Password' required
                                        value={password}
                                        onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <FaLock className='icon'/>
                             </div>
-
                             <button type="submit">Sign Up</button>
-
-
                             <div className="register-link">
                                 <p>Already have an account? <Link to="/login">Log in</Link></p>
                             </div>

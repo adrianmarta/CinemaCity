@@ -9,6 +9,7 @@ import CreateParty from "./components/createParty";
 import PartyDetails from "./components/PartyDetails";
 import JoinParty from "./components/JoinParty";
 import './setup.js';
+import UserParties from "./components/UserParties";
 function App() {
     return (
         <Router>
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/parties" element={<CreateParty/>}/>
                 <Route path="/party-details/:partyId" element={<PartyDetails />} />
                 <Route path="/join-party/:partyId" element={<JoinParty />} />
+                <Route path="/user-parties" element={<UserParties />} />
             </Routes>
         </Router>
     );

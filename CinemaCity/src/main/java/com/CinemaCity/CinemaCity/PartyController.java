@@ -30,6 +30,14 @@ public class PartyController {
         }
         return new ResponseEntity<>(parties, HttpStatus.OK);
     }
+    @GetMapping("/user-parties/{email}")
+    public ResponseEntity<List<Party>> getUserParties(@PathVariable String email){
+        List<Party> parties = partyService.getPartiesByUser(email);
+        for (Party party : parties) {
+            party.setObjectIdString(party.getObjectId().toString());
+        }
+        return new ResponseEntity<>(parties, HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<Party> createParty(@RequestPart("party") Party party,
                                              @RequestPart(value = "image", required = false) MultipartFile image) {
@@ -59,7 +67,7 @@ public class PartyController {
     public ResponseEntity<?> joinParty( @RequestBody JoinRequest joinRequest,  @PathVariable ObjectId objectId) {
         String s = "-->unable to join the user";
         try {
-            Optional<User> existingUser = userService.singleUserByEmail(joinRequest.getEmail());
+            Optional<User> existingUser = userService.getUserByEmail(joinRequest.getEmail());
             String goodie = joinRequest.getGoodie();
             Optional<Party> existingParty = partyService.getPartyById(objectId);
             if (existingUser.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with this mail: \"" + joinRequest.getEmail() + "\" not found :(");
@@ -68,6 +76,15 @@ public class PartyController {
             return ResponseEntity.ok("User joined the party");
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage() + s);
+        }
+    }
+    @PostMapping("/cancel-participation/{partyId}")
+    public ResponseEntity<?> cancelParticipation(@PathVariable ObjectId partyId, @RequestBody String email) {
+        try {
+            partyService.cancelParticipation(partyId, email);
+            return ResponseEntity.ok("Participation canceled");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error canceling participation");
         }
     }
 }

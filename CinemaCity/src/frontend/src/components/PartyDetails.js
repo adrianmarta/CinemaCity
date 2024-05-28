@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState, useCallback } from "react";
 import axios from 'axios';
 import './style.css';
@@ -8,6 +8,7 @@ const PartyDetails = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { partyId } = useParams();
+    const navigate = useNavigate();
 
     const fetchPartyDetails = useCallback(async () => {
         try {
@@ -32,6 +33,13 @@ const PartyDetails = () => {
         return <div className="error">{error}</div>;
     }
 
+    const handleSignOut = () => {
+        // Clear the JWT from local storage
+        localStorage.removeItem('token');
+        // Navigate to the login page or any other page you desire
+        navigate('/');
+    };
+
     return (
         <div className="party-details">
             <header
@@ -48,6 +56,7 @@ const PartyDetails = () => {
                 <div>
                     <Link to="/">
                         <button
+                            onClick={handleSignOut}
                             style={{
                                 backgroundColor: "#D9D9D9",
                                 border: "none",
@@ -67,12 +76,23 @@ const PartyDetails = () => {
                 </div>
             </header>
             <div className="content">
-                <h2>{party.hostUser.name}'s {party.party_planer_name} party</h2>
-                <p>Film: {party.film_name}</p>
-                <p>Description: {party.description}</p>
-                <p>Location: {party.location}</p>
-                <p>Restrictions: {party.restrictions}</p>
-                <p>Joined people: {party.joined_participants ? `${party.joined_participants.length}/${party.max_participants}` : 'Loading...'}</p>
+                <div className="top-section">
+                    {party.imageUrls && party.imageUrls.length > 0 ? (
+                        party.imageUrls.map((image, index) => (
+                            <img key={index} src={image} alt={`Party Image ${index + 1}`} />
+                        ))
+                    ) : (
+                        <p>No images available</p>
+                    )}
+                </div>
+                <div className="bottom-section">
+                    <h2>{party.hostUser.name}'s party</h2>
+                    <p>Film: {party.film_name}</p>
+                    <p>Description: {party.description}</p>
+                    <p>Location: {party.location}</p>
+                    <p>Restrictions: {party.restrictions}</p>
+                    <p>Joined people: {party.joined_participants ? `${party.joined_participants.length}/${party.max_participants}` : 'Loading...'}</p>
+                </div>
             </div>
             <div className="actions">
                 <Link to={`/join-party/${partyId}`}>

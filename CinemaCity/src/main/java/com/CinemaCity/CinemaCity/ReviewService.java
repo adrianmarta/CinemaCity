@@ -18,7 +18,7 @@ public class ReviewService {
     }
     @Transactional
     public Review createReview(Review review,ObjectId partyId) {
-        Optional<User> reviewer = userService.singleUserByEmail(review.getReviewer().getEmail());
+        Optional<User> reviewer = userService.getUserByEmail(review.getReviewer().getEmail());
         if(reviewer.isPresent()) {
             review.setReviewer(reviewer.get());
         }else throw new IllegalStateException("The reviewer doesn't exist");

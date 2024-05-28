@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -28,6 +29,7 @@ public class Party {
     @DocumentReference
     private List<User> joined_participants;
     private List<String> imageUrls;
+    private Date date;
 
     //private location?
 

@@ -13,8 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalLong;
-@CrossOrigin("http://localhost:3000/signin")
+
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -23,17 +23,18 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private JwtUtil jwtUtil;
 
-
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-        return new ResponseEntity<List<User>>(userService.AllUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
-    @PostMapping()
+
+    @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        Optional<User> existingUser = userService.singleUserByEmail(user.getEmail());
+        Optional<User> existingUser = userService.getUserByEmail(user.getEmail());
         if (existingUser.isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The email already exists!");
         } else {
@@ -41,34 +42,44 @@ public class UserController {
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         }
     }
+
     @GetMapping("/profile")
     public ResponseEntity<User> getProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Optional<User> user = userService.singleUserByEmail(email);
-        if (user.isPresent()) {
-            return new ResponseEntity<>(user.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        Optional<User> user = userService.getUserByEmail(email);
+        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-    @GetMapping("/{SignIn}")
-    public ResponseEntity<Optional<User>> findUserByEmail(@PathVariable String SignIn) {
-        return new ResponseEntity<>(userService.singleUserByEmail(SignIn), HttpStatus.OK);
+
+    @GetMapping("/{email}")
+    public ResponseEntity<Optional<User>> findUserByEmail(@PathVariable String email) {
+        return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) throws Exception{
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
         } catch (Exception e) {
-            throw new Exception("Incorrect email or password", e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect email or password");
         }
+
         final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
         final String jwt = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthResponse(jwt));
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String authorizationHeader) {
+        String jwt = authorizationHeader.substring(7);
+        try {
+            String refreshedToken = jwtUtil.refreshToken(jwt);
+            return ResponseEntity.ok(new AuthResponse(refreshedToken));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Failed to refresh token");
+        }
     }
 }

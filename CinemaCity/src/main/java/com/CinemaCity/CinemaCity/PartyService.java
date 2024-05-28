@@ -30,7 +30,7 @@ public class PartyService {
         validateParty(party);
         try {
             if (party.getHostUser() != null) {
-                Optional<User> optionalHost = userService.singleUserByEmail(party.getHostUser().getEmail());
+                Optional<User> optionalHost = userService.getUserByEmail(party.getHostUser().getEmail());
                 if (optionalHost.isPresent()) {
                     party.setHostUser(optionalHost.get());
                     party.setJoined_participants(new ArrayList<>());
@@ -79,4 +79,40 @@ public class PartyService {
         logger.info("User {} joined to party {}", user.getEmail(), party.getObjectId());
         logger.debug("Party after joining: {}", party);
     }
+    public List<Party> getPartiesByUser(String email){
+        List<Party> allParties = partyRepository.findAll();
+        List<Party> userParties = new ArrayList<>();
+        for (Party party : allParties) {
+            if (party.getJoined_participants().stream().anyMatch(user -> user.getEmail().equals(email))) {
+                userParties.add(party);
+            }
+        }
+        return userParties;
+    }
+
+   /* public void leaveReview(ObjectId partyId, String review) {
+        Optional<Party> optionalParty = partyRepository.findPartyByObjectId(partyId);
+        if (optionalParty.isPresent()) {
+            Party party = optionalParty.get();
+            // Assume Party class has a reviews field
+            if (party.getReviews() == null) {
+                party.setReviews(new ArrayList<>());
+            }
+            party.getReviews().add(review);
+            partyRepository.save(party);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Party not found");
+        }
+    }*/
+    public void cancelParticipation(ObjectId partyId, String email) {
+        Optional<Party> optionalParty = partyRepository.findPartyByObjectId(partyId);
+        if (optionalParty.isPresent()) {
+            Party party = optionalParty.get();
+            party.getJoined_participants().removeIf(user -> user.getEmail().equals(email));
+            partyRepository.save(party);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Party not found");
+        }
+    }
+
 }

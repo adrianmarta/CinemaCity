@@ -10,6 +10,7 @@ function CreateParty() {
     const [restrictions, setRestrictions] = useState('');
     const [goodies, setGoodies] = useState('');
     const [max_participants, setMax_participants] = useState('');
+    const [dateAndTime, setDateAndTime] = useState(''); // State to store date and time
     const [image, setImage] = useState(null);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -49,6 +50,7 @@ function CreateParty() {
             restrictions,
             goodies: goodies.split(',').map(item => item.trim()),
             max_participants: parseInt(max_participants),
+            date: new Date(dateAndTime), // Convert date and time to a JavaScript Date object
             hostUser: { email: hostUser.email } // Include host user details
         };
 
@@ -77,7 +79,12 @@ function CreateParty() {
             }
         }
     };
-
+    const handleSignOut = () => {
+        // Clear the JWT from local storage
+        localStorage.removeItem('token');
+        // Navigate to the login page or any other page you desire
+        navigate('/');
+    };
     return (
         <div>
             <header
@@ -94,6 +101,7 @@ function CreateParty() {
                 <div>
                     <Link to="/">
                         <button
+                            onClick={handleSignOut}
                             style={{
                                 backgroundColor: "#D9D9D9",
                                 border: "none",
@@ -179,6 +187,17 @@ function CreateParty() {
                                         onChange={(e) => setMax_participants(e.target.value)}
                                     />
                                 </div>
+                                <div className="input-box">
+                                    <input
+                                        type="datetime-local" // Input for selecting date and time
+                                        placeholder="Date and Time"
+                                        required
+                                        value={dateAndTime}
+                                        onChange={(e) => setDateAndTime(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-row">
                                 <div className="input-box">
                                     <input
                                         type="file"

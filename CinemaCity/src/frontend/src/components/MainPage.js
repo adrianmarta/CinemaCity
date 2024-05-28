@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import './style.css';
 
 const MainPage = () => {
     const [parties, setParties] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchParties();
@@ -20,6 +21,13 @@ const MainPage = () => {
         }
     };
 
+    const handleSignOut = () => {
+        // Clear the JWT from local storage
+        localStorage.removeItem('token');
+        // Navigate to the login page or any other page you desire
+        navigate('/');
+    };
+
     return (
         <div>
             <header
@@ -33,25 +41,24 @@ const MainPage = () => {
                 }}
             >
                 <h1 style={{ margin: 0 }}>CinemaHome</h1>
-                <div>
-                    <Link to="/">
-                        <button
-                            style={{
-                                backgroundColor: "#D9D9D9",
-                                border: "none",
-                                color: "black",
-                                padding: "15px 32px",
-                                textAlign: "center",
-                                textDecoration: "none",
-                                display: "inline-block",
-                                fontSize: "16px",
-                                margin: "4px 2px",
-                                cursor: "pointer"
-                            }}
-                        >
-                            Sign out
-                        </button>
-                    </Link>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                        onClick={handleSignOut}
+                        style={{
+                            backgroundColor: "#D9D9D9",
+                            border: "none",
+                            color: "black",
+                            padding: "15px 32px",
+                            textAlign: "center",
+                            textDecoration: "none",
+                            display: "inline-block",
+                            fontSize: "16px",
+                            margin: "4px 2px",
+                            cursor: "pointer"
+                        }}
+                    >
+                        Sign out
+                    </button>
                     <Link to="/parties">
                         <button
                             style={{
@@ -70,6 +77,24 @@ const MainPage = () => {
                             Create Party
                         </button>
                     </Link>
+                    <Link to="/user-parties">
+                        <button
+                            style={{
+                                backgroundColor: "#D9D9D9",
+                                border: "none",
+                                color: "black",
+                                padding: "15px 32px",
+                                textAlign: "center",
+                                textDecoration: "none",
+                                display: "inline-block",
+                                fontSize: "16px",
+                                margin: "4px 2px",
+                                cursor: "pointer"
+                            }}
+                        >
+                            My Parties
+                        </button>
+                    </Link>
                 </div>
             </header>
             <div
@@ -86,21 +111,39 @@ const MainPage = () => {
                         className="wrapper-listing"
                         style={{
                             border: "1px solid #ccc",
-                            padding: "20px",
                             borderRadius: "5px",
-                            boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)"
+                            boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
+                            overflow: "hidden",
+                            display: "flex",
+                            flexDirection: "column"
                         }}
                     >
-                        <h2>{party.party_planer_name}</h2>
-                        <p>{party.film_name}</p>
-                        <p>{party.description}</p>
-                        <p>{party.location}</p>
-                        <p>{party.restrictions}</p>
-                        <p>{party.reviews}</p>
-                        {/* Add more party details here */}
-                        <Link to={party.objectIdString ? `/party-details/${party.objectIdString}` : "/main-page"}> {/* Verificare pentru objectIdString */}
-                            <button className="btn">View Details</button>
-                        </Link>
+                        <div style={{ flex: 1 }}>
+                            {/* Image gallery section */}
+                            <div style={{ display: "flex", overflowX: "auto" }}>
+                                {party.imageUrls.map((image, index) => (
+                                    <img
+                                        key={index}
+                                        src={image.url} // Assuming each image object has a 'url' field
+                                        alt={party.party_planer_name} // Add alt text for accessibility
+                                        style={{ width: "auto", height: "150px", marginRight: "10px" }}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div style={{ padding: "20px" }}>
+                            {/* Party details section */}
+                            <h2>{party.film_name}</h2>
+                            <p>{party.party_planer_name}</p>
+                            <p>{party.description}</p>
+                            <p>{party.location}</p>
+                            <p>{party.restrictions}</p>
+                            <p>{party.reviews}</p>
+                            {/* Add more party details here */}
+                            <Link to={party.objectIdString ? `/party-details/${party.objectIdString}` : "/main-page"}>
+                                <button className="btn">View Details</button>
+                            </Link>
+                        </div>
                     </div>
                 ))}
             </div>
