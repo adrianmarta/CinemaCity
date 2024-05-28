@@ -48,7 +48,6 @@ Pagina review
 Pagina create party
     #se completeaza numele filmului
     #se completeaza descrierea, locatia si data respectiv ora
-    #buton de adaugat goodies
     #selectarea numarului maxim de participanti
     #restrictii legate de gen si varsta
     #buton de save

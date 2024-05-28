@@ -63,6 +63,9 @@ public class PartyService {
         if (party.getJoined_participants() != null && party.getJoined_participants().contains(user)) {
             throw new IllegalStateException("User already joined");
         }
+        if(party.getJoined_participants().size()>=party.getMax_participants()){
+            throw new IllegalStateException("You can't join this party, it's full!");
+        }
         if (party.getHostUser().equals(user)) {
             throw new IllegalStateException("You are the host and you can't join as a new outside participant");
         }
