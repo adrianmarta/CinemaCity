@@ -22,10 +22,12 @@ const MainPage = () => {
     };
 
     const handleSignOut = () => {
-        // Clear the JWT from local storage
         localStorage.removeItem('token');
-        // Navigate to the login page or any other page you desire
         navigate('/');
+    };
+
+    const convertBlobToBase64 = (blob) => {
+        return `data:image/jpeg;base64,${blob}`;
     };
 
     return (
@@ -121,11 +123,11 @@ const MainPage = () => {
                         <div style={{ flex: 1 }}>
                             {/* Image gallery section */}
                             <div style={{ display: "flex", overflowX: "auto" }}>
-                                {party.imageUrls.map((image, index) => (
+                                {party.images && party.images.map((image, index) => (
                                     <img
                                         key={index}
-                                        src={image.url} // Assuming each image object has a 'url' field
-                                        alt={party.party_planer_name} // Add alt text for accessibility
+                                        src={convertBlobToBase64(image)}
+                                        alt={party.party_planer_name}
                                         style={{ width: "auto", height: "150px", marginRight: "10px" }}
                                     />
                                 ))}
@@ -139,7 +141,6 @@ const MainPage = () => {
                             <p>{party.location}</p>
                             <p>{party.restrictions}</p>
                             <p>{party.reviews}</p>
-                            {/* Add more party details here */}
                             <Link to={party.objectIdString ? `/party-details/${party.objectIdString}` : "/main-page"}>
                                 <button className="btn">View Details</button>
                             </Link>
