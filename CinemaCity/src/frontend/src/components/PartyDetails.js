@@ -25,6 +25,10 @@ const PartyDetails = () => {
         fetchPartyDetails();
     }, [fetchPartyDetails]);
 
+    const convertBlobToBase64 = (blob) => {
+        return `data:image/jpeg;base64,${blob}`;
+    };
+
     if (loading) {
         return <div className="loading">Loading...</div>;
     }
@@ -54,36 +58,35 @@ const PartyDetails = () => {
             >
                 <h1 style={{ margin: 0 }}>CinemaHome</h1>
                 <div>
-                    <Link to="/">
-                        <button
-                            onClick={handleSignOut}
-                            style={{
-                                backgroundColor: "#D9D9D9",
-                                border: "none",
-                                color: "black",
-                                padding: "15px 32px",
-                                textAlign: "center",
-                                textDecoration: "none",
-                                display: "inline-block",
-                                fontSize: "16px",
-                                margin: "4px 2px",
-                                cursor: "pointer"
-                            }}
-                        >
-                            Sign out
-                        </button>
-                    </Link>
+                    <button
+                        onClick={handleSignOut}
+                        style={{
+                            backgroundColor: "#D9D9D9",
+                            border: "none",
+                            color: "black",
+                            padding: "15px 32px",
+                            textAlign: "center",
+                            textDecoration: "none",
+                            display: "inline-block",
+                            fontSize: "16px",
+                            margin: "4px 2px",
+                            cursor: "pointer"
+                        }}
+                    >
+                        Sign out
+                    </button>
                 </div>
             </header>
             <div className="content">
                 <div className="top-section">
-                    {party.imageUrls && party.imageUrls.length > 0 ? (
-                        party.imageUrls.map((image, index) => (
-                            <img key={index} src={image} alt={`Party Image ${index + 1}`} />
-                        ))
-                    ) : (
-                        <p>No images available</p>
-                    )}
+                    {party.images && party.images.map((image, index) => (
+                        <img
+                            key={index}
+                            src={convertBlobToBase64(image)}
+                            alt={party.party_planer_name}
+                            style={{ width: "auto", height: "150px", marginRight: "10px" }}
+                        />
+                    ))}
                 </div>
                 <div className="bottom-section">
                     <h2>{party.hostUser.name}'s party</h2>
