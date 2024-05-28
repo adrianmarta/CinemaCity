@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.server.ResponseStatusException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class PartyService {
     private static final Logger logger = LoggerFactory.getLogger(PartyService.class);
 

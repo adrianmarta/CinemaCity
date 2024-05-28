@@ -23,7 +23,6 @@ public class User implements UserDetails {
     private String password;
     private List<String> reviewId;
 
-    public User() {}
 
     public User(String name, int age, String gender, String email, String password) {
         this.name = name;

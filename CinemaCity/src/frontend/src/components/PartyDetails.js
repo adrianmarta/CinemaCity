@@ -86,7 +86,7 @@ const PartyDetails = () => {
                     )}
                 </div>
                 <div className="bottom-section">
-                    <h2>{party.hostUser.name}'s party</h2>
+                    <h2>{party.party_planer_name}'s party</h2>
                     <p>Film: {party.film_name}</p>
                     <p>Description: {party.description}</p>
                     <p>Location: {party.location}</p>
