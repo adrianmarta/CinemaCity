@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
@@ -43,8 +44,8 @@ public class PartyController {
                                              @RequestPart(value = "image", required = false) MultipartFile image) {
         try {
             if (image != null && !image.isEmpty()) {
-                String imageUrl = fileUploadService.uploadFile(image);
-                party.setImageUrls(List.of(imageUrl));
+                party.setImages(new ArrayList<>());
+                party.getImages().add(image.getBytes());
             }
             return new ResponseEntity<>(partyService.createParty(party), HttpStatus.CREATED);
         } catch (IOException e) {

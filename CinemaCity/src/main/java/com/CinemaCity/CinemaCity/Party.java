@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +29,8 @@ public class Party {
     private User hostUser;
     @DocumentReference
     private List<User> joined_participants;
-    private List<String> imageUrls;
+    @Field("image")
+    private List<byte[]> images;
     private Date date;
 
     //private location?
