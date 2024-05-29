@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import './style.css';
 
@@ -7,7 +7,7 @@ const UserParties = () => {
     const [parties, setParties] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const email = localStorage.getItem('email'); // Assuming userId is stored in localStorage
+    const email = localStorage.getItem('email'); // Assuming email is stored in localStorage
 
     useEffect(() => {
         fetchUserParties();
@@ -39,9 +39,8 @@ const UserParties = () => {
 
     const handleCancelParticipation = async (partyId) => {
         try {
-            await axios.post(`http://localhost:8080/parties/cancel-participation/${partyId}`, { email: localStorage.getItem('email') });
+            await axios.post(`http://localhost:8080/parties/cancel-participation/${partyId}`, { email: email });
             fetchUserParties();
-
         } catch (error) {
             console.error("Error canceling participation:", error);
         }
@@ -96,16 +95,13 @@ const UserParties = () => {
                             <p>Date: {new Date(party.date).toLocaleString()}</p>
                             <div className="actions">
                                 {new Date(party.date) < new Date() ? (
-                                    <button onClick={() => handleLeaveReview(party.objectId, prompt('Leave a review:'))}>
+                                    <button onClick={() => handleLeaveReview(party.objectIdString, prompt('Leave a review:'))}>
                                         Leave a Review
                                     </button>
                                 ) : (
-                                    <Link to="/main-page">
-                                        <button onClick={() => handleCancelParticipation(party.objectId)}>
-                                            Not Coming Anymore
-                                        </button>
-                                    </Link>
-
+                                    <button onClick={() => handleCancelParticipation(party.objectIdString)}>
+                                        Not Coming Anymore
+                                    </button>
                                 )}
                             </div>
                         </div>

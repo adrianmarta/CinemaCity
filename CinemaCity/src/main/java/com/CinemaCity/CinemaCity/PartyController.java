@@ -80,12 +80,16 @@ public class PartyController {
         }
     }
     @PostMapping("/cancel-participation/{partyId}")
-    public ResponseEntity<?> cancelParticipation(@PathVariable ObjectId partyId, @RequestBody String email) {
+    public ResponseEntity<?> cancelParticipation(@PathVariable ObjectId partyId, @RequestBody User user) {
         try {
-            partyService.cancelParticipation(partyId, email);
+            Optional<User> participant = userService.getUserByEmail(user.getEmail());
+            if(participant.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with this mail: \"" + user.getEmail() + "\" not found :(");
+            }
+            partyService.cancelParticipation(partyId, participant.get());
             return ResponseEntity.ok("Participation canceled");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error canceling participation");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error canceling participation: "+e.getMessage());
         }
     }
 }
