@@ -87,7 +87,7 @@ const JoinParty = () => {
                 <div className={styles["content-container"]}>
 
                     <div className={styles.content1}>
-                        <h2>{party.hostUser.name}'s {party.party_planer_name} party</h2>
+                        <h2>{party.hostUser.name}'s party</h2>
                         <p>Film: {party.film_name}</p>
                         <p>Remaining seats: {party.joined_participants ? `${party.max_participants - party.joined_participants.length}/${party.max_participants}` : 'Loading...'}</p>
                         <p>Participants joined: {party.joined_participants.length}</p>
