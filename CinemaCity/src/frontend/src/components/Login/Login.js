@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import './style.css';
 import { FaUser, FaLock } from "react-icons/fa";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import styles from './login.module.css'; // Import CSS module for styles
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -23,12 +23,12 @@ const Login = () => {
             console.log('Login successful', response.data);
             navigate('/main-page');
         } catch (error) {
-
             console.error('Login failed', error.response.data);
             setError(error.response.data);
             logout();
         }
     };
+
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('email');
@@ -48,35 +48,34 @@ const Login = () => {
         }
     );
 
-
     return (
         <div>
-            <header style={{ backgroundColor: '#283548', color: '#fff', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ margin: 0 }}>CinemaHome</h1>
+            <header className={styles.header}>
+                <h1>CinemaHome</h1>
             </header>
-            <div className="page">
-                <div className='wrapper'>
-                    <div className="form-box login">
+            <div className={styles.container}>
+                <div className={styles.wrapper}>
+                    <div className={styles.formBox}>
                         <form onSubmit={handleSubmit}>
                             <h2>Login</h2>
                             {error && <p style={{ color: 'red' }}>{error}</p>}
-                            <div className="input-box">
+                            <div className={styles.inputBox}>
                                 <input type="text"
-                                       placeholder='email' required
+                                       placeholder='Email' required
                                        value={email}
                                        onChange={(e) => setEmail(e.target.value)}
                                 />
-                                <FaUser className='icon'/>
+                                <FaUser className={styles.icon}/>
                             </div>
-                            <div className="input-box">
+                            <div className={styles.inputBox}>
                                 <input type="password"
-                                       placeholder='password' required
+                                       placeholder='Password' required
                                        value={password}
                                        onChange={(e) => setPassword(e.target.value)}
                                 />
-                                <FaLock className='icon'/>
+                                <FaLock className={styles.icon}/>
                             </div>
-                            <div className="remember-forgot">
+                            <div className={styles.rememberForgot}>
                                 <label>
                                     <input type="checkbox" />Remember me
                                 </label>
@@ -85,8 +84,8 @@ const Login = () => {
 
                             <button type="submit">Login</button>
 
-                            <div className="register-link">
-                                <p>Don't have an account? <a href="/signin">Sign Up</a></p>
+                            <div className={styles.registerLink}>
+                                <p>Don't have an account? <Link to="/signin">Sign Up</Link></p>
                             </div>
                         </form>
                     </div>

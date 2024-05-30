@@ -1,7 +1,7 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import './style.css'; // Assuming you have a CSS file for styles
+import styles from './joinParty.module.css';
 
 const JoinParty = () => {
     const [party, setParty] = useState(null);
@@ -71,40 +71,47 @@ const JoinParty = () => {
     };
     return (
         <div>
-            <header className="header">
+            <header className={styles.header1}>
                 <h1>CinemaHome</h1>
                 <div>
                     <Link to="/">
                         <button
-                        onClick={handleSignOut}
-                            className="sign-out-btn">
+                            onClick={handleSignOut}
+                            className={styles["sign-out-btn"]}>
                             Sign out
                         </button>
                     </Link>
                 </div>
             </header>
-            <div className="content">
-                <h2>{party.hostUser.name}'s {party.party_planer_name} party</h2>
-                <p>Film: {party.film_name}</p>
-                <p>Remaining seats: {party.joined_participants ? `${party.max_participants - party.joined_participants.length}/${party.max_participants}` : 'Loading...'}</p>
-                <p>Participants joined: {party.joined_participants.length}</p>
-                <h3>Goodies:</h3>
-                <ul>
-                    {party.goodies && party.goodies.map((goodie, index) => (
-                        <li key={index}>{goodie}</li>
-                    ))}
-                </ul>
-                <input
-                    type="text"
-                    value={newGoodie}
-                    onChange={(e) => setNewGoodie(e.target.value)}
-                    placeholder="Add a goodie"
-                />
-                <button onClick={handleJoinParty}>Join Party</button>
-                <Link to={`/party-details/${party.objectIdString}`}>
-                    <button className="btn">Back to party-details</button>
-                </Link>
+            <div className={styles.container}>
+                <div className={styles["content-container"]}>
+
+                    <div className={styles.content1}>
+                        <h2>{party.hostUser.name}'s {party.party_planer_name} party</h2>
+                        <p>Film: {party.film_name}</p>
+                        <p>Remaining seats: {party.joined_participants ? `${party.max_participants - party.joined_participants.length}/${party.max_participants}` : 'Loading...'}</p>
+                        <p>Participants joined: {party.joined_participants.length}</p>
+                        <h3>Goodies:</h3>
+                        <ul>
+                            {party.goodies && party.goodies.map((goodie, index) => (
+                                <li key={index}>{goodie}</li>
+                            ))}
+                        </ul>
+                        <input
+                            type="text"
+                            value={newGoodie}
+                            onChange={(e) => setNewGoodie(e.target.value)}
+                            placeholder="Add a goodie"
+                            className={styles["input-text"]}
+                        />
+                        <button onClick={handleJoinParty} className={styles["join-party-btn"]}>Join Party</button>
+                        <Link to={`/party-details/${party.objectIdString}`}>
+                            <button className={styles.btn}>Back to party-details</button>
+                        </Link>
+                    </div>
+                </div>
             </div>
+
         </div>
     );
 };

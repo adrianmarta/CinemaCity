@@ -23,6 +23,7 @@ const MainPage = () => {
 
     const handleSignOut = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('email')
         navigate('/');
     };
 
