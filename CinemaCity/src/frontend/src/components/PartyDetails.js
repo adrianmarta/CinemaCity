@@ -29,6 +29,19 @@ const PartyDetails = () => {
         return `data:image/jpeg;base64,${blob}`;
     };
 
+    const formatDateTime = (dateString) => {
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        };
+        return new Date(dateString).toLocaleString('en-US', options);
+    };
+
     if (loading) {
         return <div className="loading">Loading...</div>;
     }
@@ -38,9 +51,7 @@ const PartyDetails = () => {
     }
 
     const handleSignOut = () => {
-        // Clear the JWT from local storage
         localStorage.removeItem('token');
-        // Navigate to the login page or any other page you desire
         navigate('/');
     };
 
@@ -94,6 +105,7 @@ const PartyDetails = () => {
                     <p>Description: {party.description}</p>
                     <p>Location: {party.location}</p>
                     <p>Restrictions: {party.restrictions}</p>
+                    <p>Date: {formatDateTime(party.date)}</p>
                     <p>Joined people: {party.joined_participants ? `${party.joined_participants.length}/${party.max_participants}` : 'Loading...'}</p>
                 </div>
             </div>

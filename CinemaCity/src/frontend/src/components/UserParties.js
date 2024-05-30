@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Modal from 'react-modal';
+import StarRatingComponent from 'react-star-rating-component';
 import './style.css';
+import './Modal.css';
 
 const UserParties = () => {
     const [parties, setParties] = useState([]);
     const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [PartyId, setCurrentPartyId] = useState(null);
+    const [reviewText, setReviewText] = useState('');
+    const [rating, setRating] = useState(0);
     const navigate = useNavigate();
-    const email = localStorage.getItem('email'); // Assuming userId is stored in localStorage
+    const email = localStorage.getItem('email');
 
     useEffect(() => {
         fetchUserParties();
@@ -28,10 +35,11 @@ const UserParties = () => {
         navigate('/');
     };
 
-    const handleLeaveReview = async (partyId, review) => {
+    const handleLeaveReview = async () => {
         try {
-            await axios.post(`http://localhost:8080/parties/leave-review/${partyId}`, { review });
+            await axios.post(`http://localhost:8080/review/${PartyId}`, { review: reviewText, rating });
             fetchUserParties();
+            closeModal();
         } catch (error) {
             console.error("Error leaving review:", error);
         }
@@ -41,10 +49,24 @@ const UserParties = () => {
         try {
             await axios.post(`http://localhost:8080/parties/cancel-participation/${partyId}`, { email: localStorage.getItem('email') });
             fetchUserParties();
-
         } catch (error) {
             console.error("Error canceling participation:", error);
         }
+    };
+
+    const openModal = (partyId) => {
+        setCurrentPartyId(partyId);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setReviewText('');
+        setRating(0);
+    };
+
+    const onStarClick = (nextValue) => {
+        setRating(nextValue);
     };
 
     if (error) {
@@ -96,7 +118,7 @@ const UserParties = () => {
                             <p>Date: {new Date(party.date).toLocaleString()}</p>
                             <div className="actions">
                                 {new Date(party.date) < new Date() ? (
-                                    <button onClick={() => handleLeaveReview(party.objectId, prompt('Leave a review:'))}>
+                                    <button onClick={() => openModal(party.objectId)}>
                                         Leave a Review
                                     </button>
                                 ) : (
@@ -105,13 +127,43 @@ const UserParties = () => {
                                             Not Coming Anymore
                                         </button>
                                     </Link>
-
                                 )}
                             </div>
                         </div>
                     ))
                 )}
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Leave a Review"
+                ariaHideApp={false}
+                className="Modal"
+                overlayClassName="Overlay"
+            >
+                <h2>Leave a Review</h2>
+                <form onSubmit={handleLeaveReview}>
+                    <label>
+                        Review:
+                        <textarea
+                            value={reviewText}
+                            onChange={(e) => setReviewText(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Rating:
+                        <StarRatingComponent
+                            name="rate1"
+                            starCount={5}
+                            value={rating}
+                            onStarClick={onStarClick}
+                        />
+                    </label>
+                    <button type="submit" className="submit-btn">Submit Review</button>
+                    <button type="button" onClick={closeModal} className="cancel-btn">Cancel</button>
+                </form>
+            </Modal>
         </div>
     );
 };

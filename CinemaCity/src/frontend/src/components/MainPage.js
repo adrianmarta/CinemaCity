@@ -30,6 +30,19 @@ const MainPage = () => {
         return `data:image/jpeg;base64,${blob}`;
     };
 
+    const formatDateTime = (dateString) => {
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        };
+        return new Date(dateString).toLocaleString('en-US', options);
+    };
+
     return (
         <div>
             <header
@@ -141,6 +154,7 @@ const MainPage = () => {
                             <p>{party.location}</p>
                             <p>{party.restrictions}</p>
                             <p>{party.reviews}</p>
+                            <p>{formatDateTime(party.date)}</p>
                             <Link to={party.objectIdString ? `/party-details/${party.objectIdString}` : "/main-page"}>
                                 <button className="btn">View Details</button>
                             </Link>
