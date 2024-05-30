@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from 'react-modal';
 import StarRatingComponent from 'react-star-rating-component';
-import './style.css';
 import './Modal.css';
 
 const UserParties = () => {
     const [parties, setParties] = useState([]);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [PartyId, setCurrentPartyId] = useState(null);
+    const [partyId, setCurrentPartyId] = useState(null);
     const [reviewText, setReviewText] = useState('');
     const [rating, setRating] = useState(0);
     const navigate = useNavigate();
 
     const email = localStorage.getItem('email'); // Assuming email is stored in localStorage
-
 
     useEffect(() => {
         fetchUserParties();
@@ -39,7 +37,11 @@ const UserParties = () => {
 
     const handleLeaveReview = async () => {
         try {
-            await axios.post(`http://localhost:8080/review/${PartyId}`, { review: reviewText, rating });
+            await axios.post(`http://localhost:8080/review/${partyId}`, {
+                review: reviewText,
+                rating,
+                reviewer: { email } // Send the reviewer email with the review object
+            });
             fetchUserParties();
             closeModal();
         } catch (error) {
@@ -49,7 +51,7 @@ const UserParties = () => {
 
     const handleCancelParticipation = async (partyId) => {
         try {
-            await axios.post(`http://localhost:8080/parties/cancel-participation/${partyId}`, { email: email });
+            await axios.post(`http://localhost:8080/parties/cancel-participation/${partyId}`, { email });
             fetchUserParties();
         } catch (error) {
             console.error("Error canceling participation:", error);
@@ -108,8 +110,9 @@ const UserParties = () => {
                     </button>
                 </div>
             </header>
+            <h2>Your Parties</h2>
             <div className="content">
-                <h2>Your Parties</h2>
+
                 {parties.length === 0 ? (
                     <p>No parties joined yet.</p>
                 ) : (
@@ -120,16 +123,13 @@ const UserParties = () => {
                             <p>Date: {new Date(party.date).toLocaleString()}</p>
                             <div className="actions">
                                 {new Date(party.date) < new Date() ? (
-                                    <button onClick={() => openModal(party.objectId)}>
+                                    <button onClick={() => openModal(party.objectIdString)}>
                                         Leave a Review
                                     </button>
                                 ) : (
-                                    <Link to="/main-page">
-                                        <button onClick={() => handleCancelParticipation(party.objectId)}>
-                                            Not Coming Anymore
-                                        </button>
-                                    </Link>
-
+                                    <button onClick={() => handleCancelParticipation(party.objectId)}>
+                                        Not Coming Anymore
+                                    </button>
                                 )}
                             </div>
                         </div>
@@ -146,23 +146,28 @@ const UserParties = () => {
             >
                 <h2>Leave a Review</h2>
                 <form onSubmit={handleLeaveReview}>
-                    <label>
-                        Review:
-                        <textarea
-                            value={reviewText}
-                            onChange={(e) => setReviewText(e.target.value)}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Rating:
-                        <StarRatingComponent
-                            name="rate1"
-                            starCount={5}
-                            value={rating}
-                            onStarClick={onStarClick}
-                        />
-                    </label>
+                    <div className="review-container">
+                        <label>
+                            Review:
+                            <textarea
+                                className="review-textarea"
+                                value={reviewText}
+                                onChange={(e) => setReviewText(e.target.value)}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Rating:
+                            <div className="star-rating">
+                                <StarRatingComponent
+                                    name="rate1"
+                                    starCount={5}
+                                    value={rating}
+                                    onStarClick={onStarClick}
+                                />
+                            </div>
+                        </label>
+                    </div>
                     <button type="submit" className="submit-btn">Submit Review</button>
                     <button type="button" onClick={closeModal} className="cancel-btn">Cancel</button>
                 </form>

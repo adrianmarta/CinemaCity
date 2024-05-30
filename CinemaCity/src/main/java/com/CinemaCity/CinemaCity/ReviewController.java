@@ -20,6 +20,14 @@ public class ReviewController {
         Optional<Review> review = reviewService.getReview(id);
         return review.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<Review>> getReviewsByUserEmail(@PathVariable String email) {
+        List<Review> reviews = reviewService.getReviewsByUserEmail(email);
+        if (reviews.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(reviews, HttpStatus.OK);
+    }
     @PostMapping("/{partyId}")
     public ResponseEntity<?> createReview(@RequestBody Review review, @PathVariable ObjectId partyId){
         try{
@@ -29,4 +37,5 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
+
 }
