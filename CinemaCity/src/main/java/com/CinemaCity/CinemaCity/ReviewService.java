@@ -35,10 +35,15 @@ public class ReviewService {
             finalReview.setIdString(finalReview.getId().toHexString());
             party.get().getHostUser().getReviewId().add(finalReview.getIdString());
             userService.updateUser(party.get().getHostUser());
+            updateReview(finalReview);
             return finalReview;
         }
     }
     public List<Review> getReviewsByUserEmail(String email) {
         return reviewRepository.findByReviewer_Email(email);
+    }
+
+    private void updateReview(Review review){
+        reviewRepository.save(review);
     }
 }
