@@ -38,4 +38,12 @@ public class UserService implements UserDetailsService {
     public void updateUser(User user) {
         userRepository.save(user);
     }
+    public List<String> getReviewIdsByEmail(String email) {
+        Optional<User> user = userRepository.findUserByEmail(email);
+        if (user.isPresent()) {
+            return user.get().getReviewId();
+        } else {
+            throw new IllegalStateException("User not found with email: " + email);
+        }
+    }
 }

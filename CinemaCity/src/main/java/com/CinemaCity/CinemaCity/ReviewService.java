@@ -40,7 +40,8 @@ public class ReviewService {
         }
     }
     public List<Review> getReviewsByUserEmail(String email) {
-        return reviewRepository.findByReviewer_Email(email);
+        List<String> receivedReviewIds = userService.getReviewIdsByEmail(email);
+        return reviewRepository.findAllById(receivedReviewIds);
     }
 
     private void updateReview(Review review){
