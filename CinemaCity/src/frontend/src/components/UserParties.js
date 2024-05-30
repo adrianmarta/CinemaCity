@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from 'react-modal';
 import StarRatingComponent from 'react-star-rating-component';
@@ -14,7 +14,9 @@ const UserParties = () => {
     const [reviewText, setReviewText] = useState('');
     const [rating, setRating] = useState(0);
     const navigate = useNavigate();
-    const email = localStorage.getItem('email');
+
+    const email = localStorage.getItem('email'); // Assuming email is stored in localStorage
+
 
     useEffect(() => {
         fetchUserParties();
@@ -47,7 +49,7 @@ const UserParties = () => {
 
     const handleCancelParticipation = async (partyId) => {
         try {
-            await axios.post(`http://localhost:8080/parties/cancel-participation/${partyId}`, { email: localStorage.getItem('email') });
+            await axios.post(`http://localhost:8080/parties/cancel-participation/${partyId}`, { email: email });
             fetchUserParties();
         } catch (error) {
             console.error("Error canceling participation:", error);
@@ -127,6 +129,7 @@ const UserParties = () => {
                                             Not Coming Anymore
                                         </button>
                                     </Link>
+
                                 )}
                             </div>
                         </div>

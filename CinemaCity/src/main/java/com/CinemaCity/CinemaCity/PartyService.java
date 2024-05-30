@@ -110,15 +110,19 @@ public class PartyService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Party not found");
         }
     }*/
-    public void cancelParticipation(ObjectId partyId, String email) {
+   @Transactional
+    public void cancelParticipation(ObjectId partyId, User user) {
+
         Optional<Party> optionalParty = partyRepository.findPartyByObjectId(partyId);
         if (optionalParty.isPresent()) {
             Party party = optionalParty.get();
-            party.getJoined_participants().removeIf(user -> user.getEmail().equals(email));
-            partyRepository.save(party);
+            boolean removed = party.getJoined_participants().removeIf(u -> u.getEmail().equals(user.getEmail()));
+            if (!removed) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User is not in the party");
+            }
+                partyRepository.save(party);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Party not found");
         }
     }
-
 }
