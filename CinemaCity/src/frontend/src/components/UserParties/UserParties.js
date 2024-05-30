@@ -127,7 +127,7 @@ const UserParties = () => {
                                         Leave a Review
                                     </button>
                                 ) : (
-                                    <button onClick={() => handleCancelParticipation(party.objectId)}>
+                                    <button onClick={() => handleCancelParticipation(party.objectIdString)}>
                                         Not Coming Anymore
                                     </button>
                                 )}

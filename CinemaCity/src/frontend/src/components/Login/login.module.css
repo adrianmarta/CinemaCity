@@ -1,0 +1,94 @@
+.header {
+    background-color: #283548;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Adjusted to align CinemaHome to the left */
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #35ffff; /* Reset background color */
+}
+
+.wrapper {
+    position: relative;
+    width: 500px;
+    background: #283548;
+    border-radius: 10px;
+    color: #fff;
+    padding: 40px;
+}
+
+.formBox {
+    margin-top: 30px;
+}
+
+.inputBox {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.inputBox input {
+    width: calc(100% - 40px);
+    height: 50px;
+    background: transparent;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .1);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #ffffff;
+    padding: 0 20px;
+}
+
+.inputBox input::placeholder {
+    color: #ccc;
+}
+
+.icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.rememberForgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin-bottom: 15px;
+}
+
+.rememberForgot label input {
+    margin-right: 4px;
+}
+
+.rememberForgot a {
+    color: white;
+    text-decoration: none;
+}
+
+.rememberForgot a:hover {
+    text-decoration: underline;
+}
+
+.registerLink {
+    font-size: 14.5px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.registerLink p a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.registerLink p a:hover {
+    text-decoration: underline;
+}
