@@ -88,12 +88,9 @@ const Login = () => {
                                 />
                                 <FaLock className={styles.icon} />
                             </div>
-                            <div className={styles.rememberForgot}>
-                                <label>
-                                    <input type="checkbox" />Remember me
-                                </label>
-                                <a href="#">Forgot Password</a>
-                            </div>
+
+
+
                             <button type="submit">Login</button>
                             <div className={styles.registerLink}>
                                 <p>Don't have an account? <Link to="/signin">Sign Up</Link></p>

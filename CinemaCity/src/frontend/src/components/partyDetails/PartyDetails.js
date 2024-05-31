@@ -133,12 +133,26 @@ const PartyDetails = () => {
             </div>
             <div className="actions">
                 <div className="button-group">
-                    <Link to={`/join-party/${partyId}`}>
-                        <button className="btn join">I'm in</button>
-                    </Link>
-                    <Link to="/main-page">
-                        <button className="btn back">Back to Main Page</button>
-                    </Link>
+                    <div className="actions">
+                        {new Date(party.date) < new Date() ? (
+                            <Link to="/main-page">
+                                <button className="btn back">Back to Main Page</button>
+                            </Link>
+                        ) : (
+                            <div>
+                                <button onClick={() => navigate(`/join-party/${partyId}`)}>
+                                    I'm in
+                                </button>
+                                <button onClick={() => navigate(`/main-page`)}>
+                                    Back to the main page
+                                </button>
+                            </div>
+
+
+                        )}
+                    </div>
+
+
                 </div>
             </div>
         </div>
