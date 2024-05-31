@@ -52,23 +52,18 @@ const JoinParty = () => {
             setNewGoodie(''); // Clear the input field
             navigate(`/party-details/${partyId}`); // Redirect to party details page
         } catch (error) {
+            setError("Error joining party.");
             console.error("Error joining party:", error);
         }
     };
 
-    if (error) {
-        return <div>{error}</div>; // Display error message if there's an error
-    }
-
-    if (!party) {
-        return <div>Loading...</div>; // Display loading message while fetching data
-    }
     const handleSignOut = () => {
         // Clear the JWT from local storage
         localStorage.removeItem('token');
         // Navigate to the login page or any other page you desire
         navigate('/');
     };
+
     return (
         <div>
             <header className={styles.header1}>
@@ -85,33 +80,38 @@ const JoinParty = () => {
             </header>
             <div className={styles.container}>
                 <div className={styles["content-container"]}>
-
+                    {error && <div className={styles.error}>{error}</div>} {/* Display error message */}
                     <div className={styles.content1}>
-                        <h2>{party.hostUser.name}'s party</h2>
-                        <p>Film: {party.film_name}</p>
-                        <p>Remaining seats: {party.joined_participants ? `${party.max_participants - party.joined_participants.length}/${party.max_participants}` : 'Loading...'}</p>
-                        <p>Participants joined: {party.joined_participants.length}</p>
-                        <h3>Goodies:</h3>
-                        <ul>
-                            {party.goodies && party.goodies.map((goodie, index) => (
-                                <li key={index}>{goodie}</li>
-                            ))}
-                        </ul>
-                        <input
-                            type="text"
-                            value={newGoodie}
-                            onChange={(e) => setNewGoodie(e.target.value)}
-                            placeholder="Add a goodie"
-                            className={styles["input-text"]}
-                        />
-                        <button onClick={handleJoinParty} className={styles["join-party-btn"]}>Join Party</button>
-                        <Link to={`/party-details/${party.objectIdString}`}>
-                            <button className={styles.btn}>Back to party-details</button>
-                        </Link>
+                        {party ? (
+                            <>
+                                <h2>{party.hostUser.name}'s party</h2>
+                                <p>Film: {party.film_name}</p>
+                                <p>Remaining seats: {party.joined_participants ? `${party.max_participants - party.joined_participants.length}/${party.max_participants}` : 'Loading...'}</p>
+                                <p>Participants joined: {party.joined_participants.length}</p>
+                                <h3>Goodies:</h3>
+                                <ul>
+                                    {party.goodies && party.goodies.map((goodie, index) => (
+                                        <li key={index}>{goodie}</li>
+                                    ))}
+                                </ul>
+                                <input
+                                    type="text"
+                                    value={newGoodie}
+                                    onChange={(e) => setNewGoodie(e.target.value)}
+                                    placeholder="Add a goodie"
+                                    className={styles["input-text"]}
+                                />
+                                <button onClick={handleJoinParty} className={styles["join-party-btn"]}>Join Party</button>
+                                <Link to={`/party-details/${party.objectIdString}`}>
+                                    <button className={styles.btn}>Back to party-details</button>
+                                </Link>
+                            </>
+                        ) : (
+                            <div>Loading...</div>
+                        )}
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };

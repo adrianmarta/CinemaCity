@@ -96,21 +96,21 @@ public class PartyService {
         return userParties;
     }
 
-   /* public void leaveReview(ObjectId partyId, String review) {
-        Optional<Party> optionalParty = partyRepository.findPartyByObjectId(partyId);
-        if (optionalParty.isPresent()) {
-            Party party = optionalParty.get();
-            // Assume Party class has a reviews field
-            if (party.getReviews() == null) {
-                party.setReviews(new ArrayList<>());
-            }
-            party.getReviews().add(review);
-            partyRepository.save(party);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Party not found");
-        }
-    }*/
-   @Transactional
+    /* public void leaveReview(ObjectId partyId, String review) {
+         Optional<Party> optionalParty = partyRepository.findPartyByObjectId(partyId);
+         if (optionalParty.isPresent()) {
+             Party party = optionalParty.get();
+             // Assume Party class has a reviews field
+             if (party.getReviews() == null) {
+                 party.setReviews(new ArrayList<>());
+             }
+             party.getReviews().add(review);
+             partyRepository.save(party);
+         } else {
+             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Party not found");
+         }
+     }*/
+    @Transactional
     public void cancelParticipation(ObjectId partyId, User user) {
 
         Optional<Party> optionalParty = partyRepository.findPartyByObjectId(partyId);
@@ -120,7 +120,7 @@ public class PartyService {
             if (!removed) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User is not in the party");
             }
-                partyRepository.save(party);
+            partyRepository.save(party);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Party not found");
         }

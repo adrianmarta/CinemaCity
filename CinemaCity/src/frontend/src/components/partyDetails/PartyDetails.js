@@ -1,7 +1,7 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState, useCallback } from "react";
-import axios from 'axios';
-import StarRatingComponent from 'react-star-rating-component';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import StarRatingComponent from "react-star-rating-component";
 import './partyDetails.css';
 
 const PartyDetails = () => {
@@ -45,7 +45,6 @@ const PartyDetails = () => {
     const convertBlobToBase64 = (blob) => {
         return `data:image/jpeg;base64,${blob}`;
     };
-
     const formatDateTime = (dateString) => {
         const options = {
             weekday: 'long',
@@ -58,15 +57,12 @@ const PartyDetails = () => {
         };
         return new Date(dateString).toLocaleString('en-US', options);
     };
-
     if (loading) {
         return <div className="loading">Loading...</div>;
     }
-
     if (error) {
         return <div className="error">{error}</div>;
     }
-
     const handleSignOut = () => {
         localStorage.removeItem('token');
         navigate('/');

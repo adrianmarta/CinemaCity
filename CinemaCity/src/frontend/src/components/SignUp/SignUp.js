@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import styles from './signUp.module.css';
+import { useAuth } from '../AuthContext';
 
 function SignUp() {
     const [name, setUsername] = useState('');
@@ -13,6 +14,7 @@ function SignUp() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const [successMessage, setSuccessMessage] = useState('');
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,7 +36,7 @@ function SignUp() {
                 password,
             });
             const { jwt } = loginResponse.data;
-            localStorage.setItem('token', jwt);
+            login(jwt, email);
             navigate('/main-page'); // Navigate after successful login
         } catch (error) {
             if (error.response && error.response.data) {
